@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Lo que puedes crear | Forma y Capas — Impresión 3D</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* ================= CSS BASE Y RESET ================= */
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body { background:#0e0e0e; font-family:'Barlow',sans-serif; color:#fff; -webkit-font-smoothing: antialiased; }
+
+
+
+/* ================= PORTADA ================= */
+
+.cover {
+
+  min-height: 100svh;
+
+  background: url('https://images.unsplash.com/photo-1762579318096-8e9bc45b8feb?w=1400&q=85&auto=format&fit=crop') center/cover no-repeat;
+
+  position: relative;
+
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+
+  text-align: center; padding: 60px 24px;
+
+}
+
+.cover-overlay { position:absolute; inset:0; background: linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.75) 40%, rgba(10,10,10,0.95) 100%); }
+
+.cover-bar { position:absolute; top:0; left:0; right:0; height:6px; background:linear-gradient(90deg,#E87722,#ff9940); }
+
+.cover-content { position:relative; z-index:1; }
+
+
+
+.logo-row { display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:40px; }
+
+.logo-names { display:flex; align-items:baseline; gap:8px; }
+
+.lf { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:32px; color:#fff; text-transform:uppercase; letter-spacing:1px; }
+
+.lyc { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:32px; color:#E87722; text-transform:uppercase; letter-spacing:2px; }
+
+.ls { font-family:'Barlow Condensed',sans-serif; font-size:11px; color:#bbb; letter-spacing:4px; text-transform:uppercase; margin-top:4px; }
+
+
+
+.cover-pretag { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; color:#E87722; letter-spacing:6px; text-transform:uppercase; margin-bottom:14px; display:block; }
+
+.cover-title { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:clamp(60px,12vw,110px); line-height:0.87; text-transform:uppercase; letter-spacing:-2px; margin-bottom:22px; }
+
+.cover-title .o { color:#E87722; }
+
+.cover-sub { font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:18px; color:#ccc; text-transform:uppercase; letter-spacing:4px; margin-bottom:32px; }
+
+.cover-desc { font-size:16px; color:#aaa; line-height:1.7; max-width:540px; margin:0 auto 48px; }
+
+
+
+.scroll-hint { display:flex; flex-direction:column; align-items:center; gap:8px; color:#666; font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:3px; text-transform:uppercase; cursor:pointer;}
+
+.scroll-hint svg { animation: bounce 2s infinite; transition: stroke 0.3s; }
+
+.scroll-hint:hover svg { stroke: #E87722; }
+
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+
+
+/* ================= INTRODUCCIÓN ================= */
+
+.intro { background:#111; border-top:1px solid rgba(232,119,34,0.2); border-bottom:1px solid rgba(232,119,34,0.2); padding: 28px 24px; text-align:center; }
+
+.intro p { font-size:15px; color:#999; line-height:1.7; max-width:640px; margin:0 auto; }
+
+.intro strong { color:#E87722; font-weight:600; }
+
+
+
+.section-header { padding: 56px 24px 32px; text-align:center; }
+
+.section-label { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; color:#E87722; letter-spacing:5px; text-transform:uppercase; margin-bottom:10px; display:block; }
+
+.section-title { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:clamp(36px,6vw,56px); text-transform:uppercase; letter-spacing:-0.5px; }
+
+
+
+.block-sep { max-width:1400px; margin: 12px auto 0; padding: 20px 6px 8px; display: flex; align-items: center; gap: 16px; }
+
+.block-sep-line { flex:1; height:1px; background: linear-gradient(90deg, rgba(232,119,34,0.35), transparent); }
+
+.block-sep-label { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; color: rgba(232,119,34,0.6); letter-spacing:5px; text-transform:uppercase; white-space: nowrap; }
+
+
+
+/* ================= GRID CATEGORÍAS ================= */
+
+.cat-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:6px; padding:0 6px 6px; max-width:1400px; margin:0 auto; }
+
+
+
+.cat-card { position:relative; overflow:hidden; height: 320px; cursor:pointer; background:#111; transition: height 0.45s cubic-bezier(0.4,0,0.2,1); border: 1px solid #1a1a1a; }
+
+.cat-card.cat-open { height: 500px; border-color: rgba(232,119,34,0.4); }
+
+
+
+.cat-img-bg { position:absolute; inset:0; background:center/cover no-repeat; transition: transform 0.6s ease; filter: brightness(0.65); }
+
+.cat-card:hover .cat-img-bg { transform:scale(1.04); filter: brightness(0.8); }
+
+.cat-card.cat-open .cat-img-bg { transform:scale(1.02); filter: brightness(0.35); }
+
+.cat-overlay { position:absolute; inset:0; background: linear-gradient(180deg, rgba(5,5,5,0.1) 0%, rgba(5,5,5,0.6) 50%, rgba(5,5,5,0.98) 100%); }
+
+.cat-bar { position:absolute; top:0; left:0; right:0; height:3px; background:#E87722; }
+
+
+
+.cat-chevron { position:absolute; top:14px; right:16px; z-index:2; width:26px; height:26px; border-radius:50%; background:rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; font-size:12px; color:rgba(255,255,255,0.6); transition: transform 0.4s, color 0.3s, border-color 0.3s; }
+
+.cat-card.cat-open .cat-chevron { transform:rotate(180deg); color:#E87722; border-color:rgba(232,119,34,0.5); }
+
+
+
+.cat-content { position:absolute; bottom:0; left:0; right:0; padding:18px 20px 20px; z-index:1; }
+
+.cat-num { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:11px; color:rgba(232,119,34,0.7); letter-spacing:4px; text-transform:uppercase; margin-bottom:4px; }
+
+.cat-name { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:clamp(20px,2.2vw,28px); text-transform:uppercase; letter-spacing:-0.5px; line-height:1; margin-bottom:8px; }
+
+.cat-desc { font-size:13px; color:#ccc; line-height:1.5; }
+
+.cat-extra { font-size:13px; color:#aaa; line-height:1.6; max-height:0; overflow:hidden; opacity:0; transition: max-height 0.4s 0.05s, opacity 0.3s 0.15s; margin-top:0; border-top:1px solid transparent; }
+
+.cat-card.cat-open .cat-extra { max-height:220px; opacity:1; margin-top:10px; border-top-color:rgba(232,119,34,0.2); padding-top:10px; }
+
+
+
+/* ================= SECCIÓN MATERIALES & MÁQUINA ================= */
+
+.materials-section { margin-top: 20px; }
+
+.materials-header { padding: 64px 24px 20px; text-align: center; background: #0e0e0e; border-top: 1px solid #1a1a1a; position: relative; }
+
+.materials-header::after { content:''; display:block; width:60px; height:3px; background:#E87722; margin:20px auto 0; }
+
+
+
+.machine-badge { display:inline-flex; align-items:center; gap:10px; background: rgba(232,119,34,0.08); border: 1px solid rgba(232,119,34,0.25); border-radius: 2px; padding: 8px 16px; margin-bottom: 22px; }
+
+.machine-badge-dot { width:8px; height:8px; border-radius:50%; background:#E87722; animation: pulse 2s infinite; }
+
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+
+.machine-badge-txt { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; color:#E87722; letter-spacing:4px; text-transform:uppercase; }
+
+
+
+.dual-nozzle-banner { max-width:1400px; margin: 16px auto 0; padding: 0 6px; }
+
+.dual-nozzle-inner { background: linear-gradient(135deg, rgba(232,119,34,0.06) 0%, rgba(232,119,34,0.02) 100%); border: 1px solid rgba(232,119,34,0.2); padding: 24px; display:flex; gap:24px; align-items:flex-start; flex-wrap:wrap; }
+
+.dual-nozzle-icon { flex-shrink:0; width:48px; height:48px; background:rgba(232,119,34,0.1); border:1px solid rgba(232,119,34,0.3); display:flex; align-items:center; justify-content:center; border-radius:2px; }
+
+.dual-nozzle-text h3 { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:22px; text-transform:uppercase; letter-spacing:-0.3px; color:#fff; margin-bottom:6px; }
+
+.dual-nozzle-text h3 span { color:#E87722; }
+
+.dual-nozzle-text p { font-size:14px; color:#ccc; line-height:1.6; max-width:850px; }
+
+.dual-nozzle-pills { display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; }
+
+.dnp { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:4px 12px; border-radius:1px; }
+
+.dnp-a { background:rgba(232,119,34,0.15); color:#E87722; border:1px solid rgba(232,119,34,0.3); }
+
+.dnp-b { background:rgba(255,255,255,0.04); color:#999; border:1px solid #2a2a2a; }
+
+
+
+.mat-group-sep { max-width:1400px; margin: 0 auto; padding: 44px 6px 0; display: flex; align-items: center; gap: 20px; }
+
+.mat-group-sep-line { flex:1; height:1px; background: linear-gradient(90deg, rgba(232,119,34,0.4), transparent); }
+
+.mat-group-sep-inner { display:flex; align-items:center; gap:12px; }
+
+.mat-group-sep-num { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:36px; color:rgba(232,119,34,0.12); line-height:1; letter-spacing:-1px; user-select:none; }
+
+.mat-group-sep-name { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:20px; color:#fff; text-transform:uppercase; letter-spacing:1px; line-height:1; }
+
+.mat-group-sep-name span { color:#E87722; }
+
+.mat-group-sep-desc { font-size:12px; color:#888; letter-spacing:1px; text-transform:uppercase; margin-top:4px; }
+
+
+
+/* ================= GRID MATERIALES ================= */
+
+.mat-grid { display: grid; gap: 6px; max-width: 1400px; margin: 12px auto 0; padding: 0 6px; }
+
+.mat-grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+
+
+.mat-card { position: relative; overflow: hidden; height: 210px; cursor: pointer; border: 1px solid #1a1a1a; transition: height 0.5s cubic-bezier(0.4,0,0.2,1), border-color 0.3s; user-select: none; }
+
+.mat-card:hover { border-color: rgba(232,119,34,0.4); }
+
+.mat-card.open { height: 490px; border-color: #E87722; }
+
+
+
+.mat-img-bg { position: absolute; inset: 0; background: center/cover no-repeat; transition: transform 0.55s ease; filter: brightness(0.6); }
+
+.mat-card.open .mat-img-bg { transform: scale(1.03); filter: brightness(0.3); }
+
+.mat-card:hover:not(.open) .mat-img-bg { transform: scale(1.02); filter: brightness(0.7); }
+
+.mat-overlay { position: absolute; inset: 0; background: linear-gradient(170deg, rgba(5,5,5,0.2) 0%, rgba(5,5,5,0.7) 50%, rgba(5,5,5,0.98) 100%); }
+
+
+
+.mat-accent-bar { position:absolute; top:0; left:0; bottom:0; width:3px; background: var(--mc, #E87722); transition: width 0.35s; }
+
+.mat-card.open .mat-accent-bar { width: 5px; }
+
+
+
+.mat-top { position: absolute; top:0; left:0; right:0; padding: 14px 16px 0; display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; }
+
+.mat-tag { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; color: var(--mc,#E87722); letter-spacing:3px; text-transform:uppercase; background: rgba(0,0,0,0.8); padding: 4px 10px; border-radius: 2px; }
+
+.mat-nozzle-badge { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; color:#aaa; letter-spacing:2px; text-transform:uppercase; background:rgba(0,0,0,0.8); border:1px solid rgba(255,255,255,0.15); padding:3px 8px; border-radius:2px; }
+
+.mat-nozzle-badge.hardened { color: #E87722; border-color: rgba(232,119,34,0.3); }
+
+
+
+.mat-bottom { position:absolute; bottom:0; left:3px; right:0; padding:14px 16px 18px; z-index: 1; }
+
+.mat-name { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:clamp(26px,2.8vw,36px); text-transform:uppercase; letter-spacing:-0.5px; line-height:0.95; color:#fff; }
+
+.mat-fullname { font-family:'Barlow Condensed',sans-serif; font-size:11px; color:#888; letter-spacing:2px; text-transform:uppercase; max-height:0; overflow:hidden; opacity:0; transition: max-height 0.3s, opacity 0.25s 0.1s, margin 0.3s; margin-bottom:0; }
+
+.mat-card.open .mat-fullname { max-height:24px; opacity:1; margin-top:4px; margin-bottom:14px; color:#aaa; }
+
+
+
+/* ESTADÍSTICAS DEL MATERIAL */
+
+.mat-stats { display:flex; gap:4px; flex-wrap:wrap; max-height:0; overflow:hidden; opacity:0; transition: max-height 0.4s 0.07s, opacity 0.3s 0.17s; margin-bottom:0; }
+
+.mat-card.open .mat-stats { max-height:80px; opacity:1; margin-bottom:12px; }
+
+.mat-stat { display:flex; flex-direction:column; gap:1px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-top: 2px solid var(--mc,#E87722); padding:6px 12px 8px; min-width:60px; }
+
+.mat-stat-val { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:18px; color:#fff; line-height:1; }
+
+.mat-stat-val small { font-size:11px; font-weight:600; color:#aaa; }
+
+.mat-stat-key { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:600; color:#777; letter-spacing:2px; text-transform:uppercase; }
+
+
+
+.mat-props { display:flex; flex-wrap:wrap; gap:5px; max-height:0; overflow:hidden; opacity:0; transition: max-height 0.4s 0.12s, opacity 0.3s 0.22s; margin-bottom:0; }
+
+.mat-card.open .mat-props { max-height:60px; opacity:1; margin-bottom:12px; }
+
+.mat-prop { background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.15); border-left:2px solid var(--mc,#E87722); padding:3px 10px; font-family:'Barlow Condensed',sans-serif; font-size:11px; color:#fff; letter-spacing:1px; text-transform:uppercase; }
+
+
+
+.mat-uses { font-size:13px; color:#ccc; line-height:1.6; max-height:0; overflow:hidden; opacity:0; transition: max-height 0.4s 0.16s, opacity 0.3s 0.26s; border-top:1px solid transparent; margin-top:0; }
+
+.mat-card.open .mat-uses { max-height:220px; opacity:1; border-top-color:rgba(255,255,255,0.15); padding-top:12px; margin-top:4px; }
+
+
+
+.mat-chevron { width:26px; height:26px; border-radius:50%; background:rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition: transform 0.4s, border-color 0.3s; }
+
+.mat-chevron svg { width:12px; height:12px; fill:none; stroke:rgba(255,255,255,0.6); stroke-width:2; transition: stroke 0.3s; }
+
+.mat-card.open .mat-chevron { transform:rotate(180deg); border-color:rgba(232,119,34,0.6); }
+
+.mat-card.open .mat-chevron svg { stroke:#E87722; }
+
+
+
+/* ================= FORMULARIO PRESUPUESTO ================= */
+
+.quote-section { background:#0e0e0e; padding: 64px 24px; border-top: 1px solid #1a1a1a; }
+
+.quote-inner { max-width: 860px; margin: 0 auto; }
+
+.quote-header { text-align: center; margin-bottom: 40px; }
+
+.quote-header .section-label { display: block; margin-bottom: 10px; }
+
+.quote-header .section-title { font-size: clamp(32px, 5vw, 48px); }
+
+.quote-header p { font-size: 15px; color: #888; margin-top: 12px; line-height: 1.6; }
+
+.quote-form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.quote-form .field-full { grid-column: 1 / -1; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+
+.field label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; color: #666; letter-spacing: 3px; text-transform: uppercase; }
+
+.field input, .field select, .field textarea {
+  background: #111;
+  border: 1px solid #2a2a2a;
+  border-bottom: 2px solid #333;
+  color: #fff;
+  font-family: 'Barlow', sans-serif;
+  font-size: 15px;
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color 0.25s;
+  border-radius: 2px;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpolyline points='1 1 6 7 11 1' fill='none' stroke='%23666' stroke-width='1.8'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; cursor: pointer; }
+
+.field select option { background: #111; }
+
+.field input:focus, .field select:focus, .field textarea:focus { border-color: #E87722; border-bottom-color: #E87722; }
+
+.field textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+
+.field input::placeholder, .field textarea::placeholder { color: #444; }
+
+.quote-submit { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 6px; }
+
+.quote-submit-note { font-size: 13px; color: #555; line-height: 1.5; }
+
+.btn-submit { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 15px; letter-spacing: 3px; text-transform: uppercase; background: #E87722; color: #fff; border: none; padding: 14px 36px; cursor: pointer; transition: background 0.25s, transform 0.15s; border-radius: 2px; white-space: nowrap; }
+
+.btn-submit:hover { background: #ff9940; }
+
+.btn-submit:active { transform: scale(0.98); }
+
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.quote-msg { grid-column: 1 / -1; padding: 14px 18px; border-radius: 2px; font-size: 14px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; display: none; }
+
+.quote-msg.success { background: rgba(91,189,114,0.12); border: 1px solid rgba(91,189,114,0.4); color: #5BBD72; display: block; }
+
+.quote-msg.error { background: rgba(232,119,34,0.1); border: 1px solid rgba(232,119,34,0.3); color: #E87722; display: block; }
+
+@media(max-width:640px) {
+  .quote-form { grid-template-columns: 1fr; }
+  .quote-submit { flex-direction: column; align-items: stretch; text-align: center; }
+  .btn-submit { width: 100%; }
+  .quote-section { padding: 40px 20px; }
+}
+
+
+
+/* ================= CONTACTO Y FOOTER ================= */
+
+.contact-section { background:#111; margin-top:50px; padding:56px 24px; display:flex; flex-wrap:wrap; gap:40px; align-items:center; justify-content:center; border-top:3px solid #E87722; }
+
+.contact-text { flex:1; min-width:260px; max-width:480px; }
+
+.contact-text h2 { font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:42px; text-transform:uppercase; letter-spacing:-0.5px; line-height:0.9; margin-bottom:14px; }
+
+.contact-text h2 .o { color:#E87722; }
+
+.contact-text p { font-size:15px; color:#999; line-height:1.65; }
+
+.contact-info { display:flex; flex-direction:column; gap:20px; }
+
+.ci { display:flex; align-items:center; gap:14px; }
+
+.ci-icon { width:44px; height:44px; background:#E87722; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+
+.ci-icon svg { width:20px; height:20px; fill:#fff; }
+
+.ci-details { display:flex; flex-direction:column; }
+
+.ci-label { font-family:'Barlow Condensed',sans-serif; font-size:11px; color:#777; letter-spacing:2px; text-transform:uppercase; }
+
+.ci-val { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:20px; color:#fff; text-decoration:none; transition: color 0.2s; }
+
+.ci-val:hover { color: #ff9940; }
+
+
+
+footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-align:center; font-family:'Barlow Condensed',sans-serif; font-size:11px; color:#555; letter-spacing:2px; text-transform:uppercase; }
+
+
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1100px) {
+
+  .cat-grid { grid-template-columns: repeat(3,1fr); }
+
+  .mat-grid-3 { grid-template-columns: repeat(2,1fr); }
+
+}
+
+@media(max-width:800px) {
+
+  .cat-grid { grid-template-columns: repeat(2,1fr); }
+
+}
+
+@media(max-width:640px) {
+
+  /* Cover — no pantalla completa, menos peso visual */
+  .cover { min-height: 72svh; padding: 36px 20px; }
+  .cover-bar { height: 3px; }
+  .cover-overlay { background: linear-gradient(180deg, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.6) 40%, rgba(10,10,10,0.9) 100%); }
+  .logo-row { margin-bottom: 22px; gap: 10px; }
+  .lf, .lyc { font-size: 24px; }
+  .ls { font-size: 9px; letter-spacing: 3px; }
+  .cover-pretag { font-size: 10px; letter-spacing: 4px; margin-bottom: 10px; }
+  .cover-title { font-size: 44px; letter-spacing: -1px; margin-bottom: 14px; }
+  .cover-sub { font-size: 13px; letter-spacing: 2px; margin-bottom: 14px; }
+  .cover-desc { font-size: 14px; margin-bottom: 26px; }
+
+  /* Intro */
+  .intro { padding: 18px 20px; }
+  .intro p { font-size: 14px; }
+
+  /* Cabeceras de sección — menos aire */
+  .section-header { padding: 34px 20px 18px; }
+  .section-title { font-size: 30px; }
+  .block-sep { padding: 10px 6px 4px; gap: 10px; }
+
+  /* Grid categorías — 2 columnas para ver más de un vistazo */
+  .cat-grid { grid-template-columns: repeat(2, 1fr); padding: 0 6px 6px; }
+  .cat-card { height: 148px; }
+  .cat-card.cat-open { height: 390px; }
+  .cat-content { padding: 10px 12px 12px; }
+  .cat-num { font-size: 10px; letter-spacing: 2px; }
+  .cat-name { font-size: 15px; letter-spacing: -0.3px; }
+  .cat-desc { font-size: 11px; line-height: 1.4; }
+  .cat-chevron { width: 22px; height: 22px; font-size: 10px; top: 10px; right: 10px; }
+
+  /* Cabecera materiales */
+  .materials-header { padding: 36px 20px 14px; }
+  .materials-header::after { margin: 12px auto 0; }
+
+  /* Banner doble boquilla — más compacto */
+  .dual-nozzle-inner { padding: 14px; gap: 10px; }
+  .dual-nozzle-icon { display: none; }
+  .dual-nozzle-text h3 { font-size: 17px; }
+  .dual-nozzle-text p { font-size: 13px; }
+  .dnp { font-size: 10px; padding: 3px 8px; }
+
+  /* Separadores de grupo de materiales — sin el número decorativo grande */
+  .mat-group-sep { padding: 24px 6px 0; gap: 10px; }
+  .mat-group-sep-num { display: none; }
+  .mat-group-sep-name { font-size: 15px; }
+  .mat-group-sep-desc { font-size: 10px; }
+
+  /* Grid materiales — 2 columnas */
+  .mat-grid-3 { grid-template-columns: repeat(2, 1fr); padding: 0 6px; }
+  .mat-card { height: 148px; }
+  .mat-card.open { height: 480px; }
+  .mat-top { padding: 10px 12px 0; }
+  .mat-nozzle-badge { display: none; }
+  .mat-bottom { padding: 10px 12px 14px; }
+  .mat-name { font-size: 20px; }
+  .mat-stat { padding: 5px 8px 6px; min-width: 50px; }
+  .mat-stat-val { font-size: 16px; }
+
+  /* Contacto */
+  .contact-section { gap: 24px; padding: 34px 20px; margin-top: 30px; }
+  .contact-text h2 { font-size: 30px; }
+  .contact-text { min-width: unset; }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<section class="cover">
+
+  <div class="cover-overlay"></div>
+
+  <div class="cover-bar"></div>
+
+  <div class="cover-content">
+
+    <div class="logo-row">
+
+      <svg width="52" height="52" viewBox="0 0 100 100">
+
+        <polygon points="50,10 85,28 50,46 15,28" fill="#E87722"/>
+
+        <polygon points="15,28 50,46 50,82 15,64" fill="#9E3E0E"/>
+
+        <polygon points="85,28 50,46 50,82 85,64" fill="#BE5212"/>
+
+      </svg>
+
+      <div>
+
+        <div class="logo-names"><span class="lf">FORMA</span><span class="lyc">Y CAPAS</span></div>
+
+        <div class="ls">Impresión 3D · Estudio de diseño</div>
+
+      </div>
+
+    </div>
+
+    <span class="cover-pretag">Todo lo que puedes crear</span>
+
+    <div class="cover-title">DE LA IDEA<br>A LA <span class="o">PIEZA.</span></div>
+
+    <div class="cover-sub">Impresión 3D · Diseño · Fabricación</div>
+
+    <p class="cover-desc">
+
+      La impresión 3D permite fabricar prácticamente cualquier objeto que puedas imaginar. Aquí tienes una muestra de las categorías y materiales más habituales.
+
+    </p>
+
+    <div class="scroll-hint" onclick="document.getElementById('categorias').scrollIntoView({behavior: 'smooth'});">
+
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E87722" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+
+      Explorar catálogo
+
+    </div>
+
+    <div style="margin-top:24px; position:relative; z-index:1;">
+      <a href="#presupuesto" style="display:inline-block; font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:13px; letter-spacing:3px; text-transform:uppercase; background:#E87722; color:#fff; padding:13px 32px; text-decoration:none; border-radius:2px; transition:background 0.25s;" onmouseover="this.style.background='#ff9940'" onmouseout="this.style.background='#E87722'">Pedir Presupuesto</a>
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<div class="intro">
+
+  <p>Tráenos <strong>lo que tengas</strong> — un boceto, una foto, una pieza rota o solo una idea en la cabeza. Nos encargamos del <strong>diseño 3D y la fabricación</strong>. Desde una sola unidad, sin mínimos.</p>
+
+</div>
+
+
+
+<div id="categorias" class="section-header">
+
+  <span class="section-label">Catálogo de posibilidades</span>
+
+  <div class="section-title">¿Qué se puede imprimir?</div>
+
+</div>
+
+
+
+<div class="block-sep">
+
+  <div class="block-sep-label">Uso personal y decoración</div>
+
+  <div class="block-sep-line"></div>
+
+</div>
+
+<div class="cat-grid">
+
+  <div class="cat-card" onclick="toggleCat(this)">
+
+    <div class="cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80&auto=format&fit=crop');"></div>
+
+    <div class="cat-overlay"></div><div class="cat-bar"></div><div class="cat-chevron">▾</div>
+
+    <div class="cat-content">
+
+      <div class="cat-num">01 · Hogar</div>
+
+      <div class="cat-name">Decoración<br>del hogar</div>
+
+      <p class="cat-desc">Lo que no existe en tienda, lo fabricamos. Diseño único a medida de tu espacio.</p>
+
+      <div class="cat-extra">Lámparas con geometrías imposibles de moldear, macetas con formas orgánicas, números de casa, letras tridimensionales, portavelas, cuencos decorativos y marcos personalizados. Si tienes una foto de referencia o una idea en la cabeza, es suficiente.</div>
+
+    </div>
+
+  </div>
+
+  <div class="cat-card" onclick="toggleCat(this)">
+
+    <div class="cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80&auto=format&fit=crop');"></div>
+
+    <div class="cat-overlay"></div><div class="cat-bar"></div><div class="cat-chevron">▾</div>
+
+    <div class="cat-content">
+
+      <div class="cat-num">02 · Moda</div>
+
+      <div class="cat-name">Joyería y<br>complementos</div>
+
+      <p class="cat-desc">Geometrías que ningún joyero haría a mano. Piezas de autor sin coste de molde.</p>
+
+      <div class="cat-extra">Pendientes con estructuras caladas, anillos con texturas algorítmicas, broches y hebillas a medida, collares de diseño propio, botones personalizados y accesorios para el pelo. También fabricamos tirajes pequeños para diseñadores.</div>
+
+    </div>
+
+  </div>
+
+  <div class="cat-card" onclick="toggleCat(this)">
+
+    <div class="cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=800&q=80&auto=format&fit=crop');"></div>
+
+    <div class="cat-overlay"></div><div class="cat-bar"></div><div class="cat-chevron">▾</div>
+
+    <div class="cat-content">
+
+      <div class="cat-num">03 · Regalos</div>
+
+      <div class="cat-name">Regalos y<br>personalización</div>
+
+      <p class="cat-desc">Un regalo que solo existe en el mundo porque tú lo pediste. 100% irrepetible.</p>
+
+      <div class="cat-extra">Figuras de novios para la tarta, joyeros con iniciales grabadas, trofeos y reconocimientos únicos, réplicas en miniatura de lugares especiales, detalles de boda personalizados y recuerdos en relieve. Desde una unidad, con entrega rápida.</div>
+
+    </div>
+
+  </div>
+
+  <div class="cat-card" onclick="toggleCat(this)">
+
+    <div class="cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&auto=format&fit=crop');"></div>
+
+    <div class="cat-overlay"></div><div class="cat-bar"></div><div class="cat-chevron">▾</div>
+
+    <div class="cat-content">
+
+      <div class="cat-num">04 · Edu</div>
+
+      <div class="cat-name">Juguetes y<br>educación</div>
+
+      <p class="cat-desc">Tocar para entender. Objetos físicos que hacen que conceptos abstractos se vuelvan concretos.</p>
+
+      <div class="cat-extra">Modelos anatómicos para clase de biología, sólidos geométricos y fracciones manipulativas, piezas táctiles para alumnos con necesidades especiales, kits de robótica personalizados y juguetes sensoriales. Diseñamos material didáctico desde cero para docentes.</div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<div class="block-sep">
+
+  <div class="block-sep-label">Cultura, arte y ocio</div>
+
+  <div class="block-sep-line"></div>
+
+</div>
+
+<div class="cat-grid">
+
+  <div class="cat-card" onclick="toggleCat(this)">
+
+    <div class="cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1744526313164-57e293bf8033?w=800&q=80&auto=format&fit=crop');"></div>
+
+    <div class="cat-overlay"></div><div class="cat-bar"></div><div class="cat-chevron">▾</div>
+
+    <div class="cat-content">
+
+      <div class="cat-num">05 · Colección</div>
+
+      <div class="cat-name">Figuras y<br>coleccionables</div>
+
+      <p class="cat-desc">Si existe en digital, lo hacemos físico. Precisión de décimas de milímetro.</p>
+
+      <div class="cat-extra">Personajes de anime, videojuegos y películas. Miniaturas para D&D y Warhammer listas para pintar. Bustos y retratos escultóricos. Réplicas de armas a escala real. Tráenos el archivo STL o la imagen de referencia — hacemos el resto.</div>
+
+    </div>
+
+  </div>
+
+  <div class="cat-card" onclick="toggleCat(this)">
+
+    <div class="cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1743482709776-391e48ff04e1?w=800&q=80&auto=format&fit=crop');"></div>
+
+    <div class="cat-overlay"></div><div class="cat-bar"></div><div class="cat-chevron">▾</div>
+
+    <div class="cat-content">
+
+      <div class="cat-num">06 · Arte</div>
+
+      <div class="cat-name">Arte y<br>escultura</div>
+
+      <p class="cat-desc">La impresión 3D permite construir geometrías que ninguna mano ni torno podría producir.</p>
+
+      <div class="cat-extra">Superficies generativas y matemáticas, esculturas orgánicas de autor, instalaciones para galerías y exposiciones, elementos de escenografía y atrezzo. Trabajamos con artistas para materializar sus ideas digitales, en cualquier tamaño y material.</div>
+
+    </div>
+
+  </div>
+
+  <div class="cat-card" onclick="toggleCat(this)">
+
+    <div class="cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80&auto=format&fit=crop');"></div>
+
+    <div class="cat-overlay"></div><div class="cat-bar"></div><div class="cat-chevron">▾</div>
+
+    <div class="cat-content">
+
+      <div class="cat-num">07 · Cosplay</div>
+
+      <div class="cat-name">Cosplay y<br>escenografía</div>
+
+      <p class="cat-desc">Piezas cortadas exactamente a tu cuerpo. Tu personaje, con tus medidas reales.</p>
+
+      <div class="cat-extra">Cascos, hombreras, pecheras y armaduras a medida. Props funcionales para teatro, cine y fotografía: espadas, escudos, armas futuristas. También fabricamos elementos de atrezzo para producciones — desde una unidad hasta series completas.</div>
+
+    </div>
+
+  </div>
+
+  <div class="cat-card" onclick="toggleCat(this)">
+
+    <div class="cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80&auto=format&fit=crop');"></div>
+
+    <div class="cat-overlay"></div><div class="cat-bar"></div><div class="cat-chevron">▾</div>
+
+    <div class="cat-content">
+
+      <div class="cat-num">08 · Diseño</div>
+
+      <div class="cat-name">Maquetas y<br>modelismo</div>
+
+      <p class="cat-desc">Una maqueta física en una reunión o concurso cambia completamente la percepción.</p>
+
+      <div class="cat-extra">Edificios y urbanizaciones a escala desde planos DWG o PDF. Modelos de concursos de arquitectura. Dioramas para modelismo militar o ferroviario. Terrenos, vehículos y accesorios. Fabricamos por partes para proyectos grandes.</div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<div class="block-sep">
+
+  <div class="block-sep-label">Técnico y Profesional</div>
+
+  <div class="block-sep-line"></div>
+
+</div>
+
+<div class="cat-grid">
+
+  <div class="cat-card" onclick="toggleCat(this)">
+
+    <div class="cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1743482710456-0570baa1b240?w=800&q=80&auto=format&fit=crop');"></div>
+
+    <div class="cat-overlay"></div><div class="cat-bar"></div><div class="cat-chevron">▾</div>
+
+    <div class="cat-content">
+
+      <div class="cat-num">09 · Industria</div>
+
+      <div class="cat-name">Piezas de<br>repuesto</div>
+
+      <p class="cat-desc">No tires lo que se puede reparar. Si la pieza no se fabrica, nosotros la replicamos.</p>
+
+      <div class="cat-extra">Perillas de electrodomésticos, clips y cierres rotos, componentes de coches clásicos y motos, engranajes de maquinaria. Tráenos la pieza original o una foto con medidas y estudiamos la viabilidad sin compromiso para que el ajuste sea perfecto.</div>
+
+    </div>
+
+  </div>
+
+  <div class="cat-card" onclick="toggleCat(this)">
+
+    <div class="cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80&auto=format&fit=crop');"></div>
+
+    <div class="cat-overlay"></div><div class="cat-bar"></div><div class="cat-chevron">▾</div>
+
+    <div class="cat-content">
+
+      <div class="cat-num">10 · Técnico</div>
+
+      <div class="cat-name">Herramientas<br>y soportes</div>
+
+      <p class="cat-desc">El utillaje a medida elimina el tiempo perdido buscando soluciones que no existen.</p>
+
+      <div class="cat-extra">Soportes de montaje para cámaras o sensores. Organizadores de taller. Adaptadores entre estándares incompatibles. Plantillas de taladrado y guías de montaje. Piezas de fijación personalizadas para líneas de producción o instalaciones a medida.</div>
+
+    </div>
+
+  </div>
+
+  <div class="cat-card" onclick="toggleCat(this)">
+
+    <div class="cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80&auto=format&fit=crop');"></div>
+
+    <div class="cat-overlay"></div><div class="cat-bar"></div><div class="cat-chevron">▾</div>
+
+    <div class="cat-content">
+
+      <div class="cat-num">11 · Tech</div>
+
+      <div class="cat-name">Electrónica<br>y tecnología</div>
+
+      <p class="cat-desc">Tu proyecto de electrónica merece una carcasa a su altura, totalmente a medida.</p>
+
+      <div class="cat-extra">Cajas a medida para Raspberry Pi, Arduino, ESP32 y placas custom. Carcasas para proyectos de IoT y domótica. Soportes para pantallas y baterías. Módulos DIN. Si tienes el PCB, diseñamos la caja que lo protege y lo presenta bien.</div>
+
+    </div>
+
+  </div>
+
+  <div class="cat-card" onclick="toggleCat(this)">
+
+    <div class="cat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80&auto=format&fit=crop');"></div>
+
+    <div class="cat-overlay"></div><div class="cat-bar"></div><div class="cat-chevron">▾</div>
+
+    <div class="cat-content">
+
+      <div class="cat-num">12 · Empresas</div>
+
+      <div class="cat-name">Prototipos y<br>desarrollo</div>
+
+      <p class="cat-desc">Del archivo al objeto en 24h. Itera sin esperar semanas ni pagar costosos moldes.</p>
+
+      <div class="cat-extra">Prototipos funcionales para validar ergonomía y concepto antes de producción. Modelos de presentación para inversores o ferias. Utillaje para líneas de producción. Series de 1 a 100 unidades con plazos cortos. Consulta presupuesto sin compromiso.</div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<section class="materials-section">
+
+
+
+  <div class="materials-header">
+
+    <div class="machine-badge">
+
+      <div class="machine-badge-dot"></div>
+
+      <div class="machine-badge-txt">Maquinaria Industrial: Bambu Lab X2D Pro</div>
+
+    </div>
+
+    <span class="section-label">Garantía de Calidad</span>
+
+    <div class="section-title">Nuestra Gama de Materiales</div>
+
+  </div>
+
+
+
+  <div class="dual-nozzle-banner">
+
+    <div class="dual-nozzle-inner">
+
+      <div class="dual-nozzle-icon">
+
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E87722" stroke-width="1.5">
+
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+
+        </svg>
+
+      </div>
+
+      <div class="dual-nozzle-text">
+
+        <h3>Producción Avanzada: <span>Doble Boquilla & Cámara Activa</span></h3>
+
+        <p>Trabajamos con equipos de última generación que garantizan resultados perfectos. Nuestra máquina cuenta con <strong>doble extrusor</strong>, lo que permite imprimir piezas en varios colores o combinar materiales (por ejemplo, plástico duro con bordes de goma flexible) en la misma pieza. Además, su <strong>cámara de impresión calefactada</strong> asegura que los materiales técnicos no se deformen, logrando máxima precisión geométrica.</p>
+
+        <div class="dual-nozzle-pills">
+
+          <span class="dnp dnp-a">Combinación Rígido + Flexible</span>
+
+          <span class="dnp dnp-a">Piezas Bicolor Simultáneas</span>
+
+          <span class="dnp dnp-b">Resolución Milimétrica</span>
+
+          <span class="dnp dnp-b">Cámara Térmica Anti-Warping</span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="mat-group-sep">
+
+    <div class="mat-group-sep-inner">
+
+      <div class="mat-group-sep-num">01</div>
+
+      <div class="mat-group-sep-info">
+
+        <div class="mat-group-sep-name">Materiales <span>Base</span></div>
+
+        <div class="mat-group-sep-desc">Plásticos rígidos y flexibles estándar, ordenados de menor a mayor exigencia.</div>
+
+      </div>
+
+    </div>
+
+    <div class="mat-group-sep-line"></div>
+
+  </div>
+
+
+
+  <div class="mat-grid mat-grid-3">
+
+    <div class="mat-card" style="--mc:#5BBD72;" onclick="toggleMat(this)">
+
+      <div class="mat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=800&q=80&auto=format&fit=crop');"></div>
+
+      <div class="mat-overlay"></div><div class="mat-accent-bar"></div>
+
+      <div class="mat-top">
+
+        <div class="mat-tag">El Más Popular</div>
+
+        <div class="mat-nozzle-badge">Boquilla Std.</div>
+
+        <div class="mat-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+
+      </div>
+
+      <div class="mat-bottom">
+
+        <div class="mat-name">PLA Estándar</div>
+
+        <div class="mat-fullname">Ácido Poliláctico · Rígido y Preciso</div>
+
+        <div class="mat-stats">
+
+          <div class="mat-stat"><div class="mat-stat-val">60<small>°C</small></div><div class="mat-stat-key">Temp. servicio</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Alto</div><div class="mat-stat-key">Detalle Visual</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">No</div><div class="mat-stat-key">Exteriores</div></div>
+
+        </div>
+
+        <div class="mat-props">
+
+          <span class="mat-prop">Todo color</span><span class="mat-prop">Bajo Coste</span><span class="mat-prop">Fácil de Pintar</span>
+
+        </div>
+
+        <div class="mat-uses">El todoterreno de la impresión 3D. Rígido, económico y disponible en cualquier color imaginable. Sirve para prototipos visuales rápidos, maquetas de arquitectura, figuras y todo tipo de objetos ornamentales de interior. No resiste el calor del sol continuo ni impactos fuertes.</div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="mat-card" style="--mc:#42A5F5;" onclick="toggleMat(this)">
+
+      <div class="mat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1620288627223-53302f4e8c74?w=800&q=80&auto=format&fit=crop');"></div>
+
+      <div class="mat-overlay"></div><div class="mat-accent-bar"></div>
+
+      <div class="mat-top">
+
+        <div class="mat-tag">Durabilidad Diaria</div>
+
+        <div class="mat-nozzle-badge">Boquilla Std.</div>
+
+        <div class="mat-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+
+      </div>
+
+      <div class="mat-bottom">
+
+        <div class="mat-name">PETG</div>
+
+        <div class="mat-fullname">Resistente a impactos y humedad</div>
+
+        <div class="mat-stats">
+
+          <div class="mat-stat"><div class="mat-stat-val">80<small>°C</small></div><div class="mat-stat-key">Temp. servicio</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Alta</div><div class="mat-stat-key">Res. Química</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Sí</div><div class="mat-stat-key">Uso Funcional</div></div>
+
+        </div>
+
+        <div class="mat-props">
+
+          <span class="mat-prop">Más Tenaz que PLA</span><span class="mat-prop">Soporta Agua</span>
+
+        </div>
+
+        <div class="mat-uses">El hermano mayor funcional del PLA. Es el mismo plástico usado en botellas de agua. Flexa ligeramente antes de partirse y tolera perfectamente la exposición al agua, sales y agentes químicos. Muy recomendado para soportes de taller, fundas protectoras y macetas reales.</div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="mat-card" style="--mc:#FFC107;" onclick="toggleMat(this)">
+
+      <div class="mat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1472457897821-70d3819a0e24?w=800&q=80&auto=format&fit=crop');"></div>
+
+      <div class="mat-overlay"></div><div class="mat-accent-bar"></div>
+
+      <div class="mat-top">
+
+        <div class="mat-tag">Mecánica Clásica</div>
+
+        <div class="mat-nozzle-badge">Cámara Caliente</div>
+
+        <div class="mat-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+
+      </div>
+
+      <div class="mat-bottom">
+
+        <div class="mat-name">ABS</div>
+
+        <div class="mat-fullname">Plástico industrial mecanizable</div>
+
+        <div class="mat-stats">
+
+          <div class="mat-stat"><div class="mat-stat-val">105<small>°C</small></div><div class="mat-stat-key">Temp. servicio</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Alta</div><div class="mat-stat-key">Res. Impacto</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Sí</div><div class="mat-stat-key">Acetonado</div></div>
+
+        </div>
+
+        <div class="mat-props">
+
+          <span class="mat-prop">Fácil de Lijar</span><span class="mat-prop">Alisado con Acetona</span>
+
+        </div>
+
+        <div class="mat-uses">El material de los ladrillos LEGO y componentes de coche. Ofrece gran resistencia al impacto y al calor. Permite ser mecanizado, lijado y alisado químicamente con vapor de acetona para quedar completamente liso y brillante. Gracias a nuestra impresora cerrada, lo fabricamos sin deformaciones.</div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="mat-card" style="--mc:#AB47BC;" onclick="toggleMat(this)">
+
+      <div class="mat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&q=80&auto=format&fit=crop');"></div>
+
+      <div class="mat-overlay"></div><div class="mat-accent-bar"></div>
+
+      <div class="mat-top">
+
+        <div class="mat-tag">El Rey de Exteriores</div>
+
+        <div class="mat-nozzle-badge">Cámara Caliente</div>
+
+        <div class="mat-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+
+      </div>
+
+      <div class="mat-bottom">
+
+        <div class="mat-name">ASA</div>
+
+        <div class="mat-fullname">La evolución del ABS para el sol</div>
+
+        <div class="mat-stats">
+
+          <div class="mat-stat"><div class="mat-stat-val">95<small>°C</small></div><div class="mat-stat-key">Temp. servicio</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Máx</div><div class="mat-stat-key">Resistencia UV</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">No</div><div class="mat-stat-key">Amarillea</div></div>
+
+        </div>
+
+        <div class="mat-props">
+
+          <span class="mat-prop">Intemperie Total</span><span class="mat-prop">Automoción</span>
+
+        </div>
+
+        <div class="mat-uses">Mismas propiedades que el ABS pero formulado para resistir a la intemperie de forma indefinida. Posee una resistencia excepcional frente a los rayos UV, lo que impide que las piezas amarilleen, se decoloren o se quiebren al sol. Ideal para recambios de coche y accesorios de jardín.</div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="mat-card" style="--mc:#FF7043;" onclick="toggleMat(this)">
+
+      <div class="mat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=800&q=80&auto=format&fit=crop');"></div>
+
+      <div class="mat-overlay"></div><div class="mat-accent-bar"></div>
+
+      <div class="mat-top">
+
+        <div class="mat-tag">Goma Elástica</div>
+
+        <div class="mat-nozzle-badge">Extrusor Directo</div>
+
+        <div class="mat-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+
+      </div>
+
+      <div class="mat-bottom">
+
+        <div class="mat-name">TPU Flexible</div>
+
+        <div class="mat-fullname">Poliuretano elastómero (Dureza 95A)</div>
+
+        <div class="mat-stats">
+
+          <div class="mat-stat"><div class="mat-stat-val">Alto</div><div class="mat-stat-key">Desgaste</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Sí</div><div class="mat-stat-key">Elástico</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Sí</div><div class="mat-stat-key">Amortigua</div></div>
+
+        </div>
+
+        <div class="mat-props">
+
+          <span class="mat-prop">Antideslizante</span><span class="mat-prop">Absorbe Golpes</span>
+
+        </div>
+
+        <div class="mat-uses">Material blando tipo goma con memoria elástica (vuelve a su forma original al doblarse) y propiedades antideslizantes. Ideal para juntas industriales de estanqueidad, amortiguadores de vibración en patas de muebles, suelas a medida, y fundas rugerizadas de electrónica.</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="mat-group-sep">
+
+    <div class="mat-group-sep-inner">
+
+      <div class="mat-group-sep-num">02</div>
+
+      <div class="mat-group-sep-info">
+
+        <div class="mat-group-sep-name">Acabados <span>Especiales Estéticos</span></div>
+
+        <div class="mat-group-sep-desc">La estética manda. Efectos visuales de piedra, seda o madera aplicables a PLA y PETG.</div>
+
+      </div>
+
+    </div>
+
+    <div class="mat-group-sep-line"></div>
+
+  </div>
+
+
+
+  <div class="mat-grid mat-grid-3">
+
+    <div class="mat-card" style="--mc:#D4D4D4;" onclick="toggleMat(this)">
+
+      <div class="mat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1506806732259-39c2d0268443?w=800&q=80');"></div>
+
+      <div class="mat-overlay"></div><div class="mat-accent-bar"></div>
+
+      <div class="mat-top">
+
+        <div class="mat-tag">Piedra Realista</div>
+
+        <div class="mat-nozzle-badge">Bases PLA/PETG</div>
+
+        <div class="mat-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+
+      </div>
+
+      <div class="mat-bottom">
+
+        <div class="mat-name">Mármol y Granito</div>
+
+        <div class="mat-fullname">Plásticos texturizados con contraste</div>
+
+        <div class="mat-stats">
+
+          <div class="mat-stat"><div class="mat-stat-val">Máx</div><div class="mat-stat-key">Oculta Capas</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Mate</div><div class="mat-stat-key">Acabado</div></div>
+
+        </div>
+
+        <div class="mat-props">
+
+          <span class="mat-prop">Efecto Escultura</span><span class="mat-prop">Aspecto Mineral</span>
+
+        </div>
+
+        <div class="mat-uses">Contiene micropartículas oscuras en suspensión que imitan la textura visual de la piedra. Su gran ventaja es que disimula casi al 100% las típicas líneas de impresión 3D, engañando al ojo. Es el material definitivo para bustos clásicos, columnas, macetas elegantes y maquetas.</div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="mat-card" style="--mc:#F1C40F;" onclick="toggleMat(this)">
+
+      <div class="mat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80&auto=format&fit=crop');"></div>
+
+      <div class="mat-overlay"></div><div class="mat-accent-bar"></div>
+
+      <div class="mat-top">
+
+        <div class="mat-tag">Brillo Metálico</div>
+
+        <div class="mat-nozzle-badge">Bases PLA/PETG</div>
+
+        <div class="mat-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+
+      </div>
+
+      <div class="mat-bottom">
+
+        <div class="mat-name">Silk (Efecto Seda)</div>
+
+        <div class="mat-fullname">Alta reflexión lumínica satinada</div>
+
+        <div class="mat-stats">
+
+          <div class="mat-stat"><div class="mat-stat-val">Alto</div><div class="mat-stat-key">Brillo Reflectante</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Baja</div><div class="mat-stat-key">Resistencia Fuerte</div></div>
+
+        </div>
+
+        <div class="mat-props">
+
+          <span class="mat-prop">Simula Oro/Plata</span><span class="mat-prop">Vistoso</span>
+
+        </div>
+
+        <div class="mat-uses">Plásticos modificados con elastómeros que generan un acabado espectacular que refleja la luz, dando la sensación de estar hecho de seda brillante o metal fundido. Ideal para jarrones de diseño moderno, joyas de pasarela, trofeos de campeonatos y elementos decorativos premium.</div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="mat-card" style="--mc:#34495E;" onclick="toggleMat(this)">
+
+      <div class="mat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1516321165247-4aa89a48be28?w=800&q=80&auto=format&fit=crop');"></div>
+
+      <div class="mat-overlay"></div><div class="mat-accent-bar"></div>
+
+      <div class="mat-top">
+
+        <div class="mat-tag">Minimalismo</div>
+
+        <div class="mat-nozzle-badge">Bases PLA/ABS</div>
+
+        <div class="mat-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+
+      </div>
+
+      <div class="mat-bottom">
+
+        <div class="mat-name">Acabado Mate</div>
+
+        <div class="mat-fullname">Cero reflejos para un look profesional</div>
+
+        <div class="mat-stats">
+
+          <div class="mat-stat"><div class="mat-stat-val">Nulo</div><div class="mat-stat-key">Brillo Plástico</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Alta</div><div class="mat-stat-key">Elegancia Visual</div></div>
+
+        </div>
+
+        <div class="mat-props">
+
+          <span class="mat-prop">Aspecto Inyectado</span><span class="mat-prop">Sobrio</span>
+
+        </div>
+
+        <div class="mat-uses">Al absorber la luz por completo, este acabado disimula a la perfección los defectos visuales y quita ese típico "brillo de plástico barato". Otorga a las piezas un aspecto sobrio y profesional similar al plástico inyectado. La mejor opción para carcasas de electrónica y escritorios de oficina.</div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="mat-card" style="--mc:#D35400;" onclick="toggleMat(this)">
+
+      <div class="mat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=800&q=80&auto=format&fit=crop');"></div>
+
+      <div class="mat-overlay"></div><div class="mat-accent-bar"></div>
+
+      <div class="mat-top">
+
+        <div class="mat-tag">Compuesto Orgánico</div>
+
+        <div class="mat-nozzle-badge">Boquilla Gruesa</div>
+
+        <div class="mat-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+
+      </div>
+
+      <div class="mat-bottom">
+
+        <div class="mat-name">Efecto Madera</div>
+
+        <div class="mat-fullname">PLA cargado con fibra de madera real</div>
+
+        <div class="mat-stats">
+
+          <div class="mat-stat"><div class="mat-stat-val">Sí</div><div class="mat-stat-key">Lijable como Madera</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Sí</div><div class="mat-stat-key">Barnizable</div></div>
+
+        </div>
+
+        <div class="mat-props">
+
+          <span class="mat-prop">Olor Real</span><span class="mat-prop">Tacto Texturado rústico</span>
+
+        </div>
+
+        <div class="mat-uses">Contiene polvo de madera real en suspensión. La pieza final tiene el mismo olor, tacto poroso y apariencia que la madera aglomerada. La gran ventaja es que permite ser lijado y tratado con tintes madereros y barnices estándar. Genial para cajas rústicas, mangos de herramientas y esculturas.</div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="mat-card" style="--mc:#76D7C4;" onclick="toggleMat(this)">
+
+      <div class="mat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800&q=80&auto=format&fit=crop');"></div>
+
+      <div class="mat-overlay"></div><div class="mat-accent-bar"></div>
+
+      <div class="mat-top">
+
+        <div class="mat-tag">Paso de Luz</div>
+
+        <div class="mat-nozzle-badge">Bases PETG/PC</div>
+
+        <div class="mat-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+
+      </div>
+
+      <div class="mat-bottom">
+
+        <div class="mat-name">Translúcidos</div>
+
+        <div class="mat-fullname">Plásticos puros sin pigmentación opaca</div>
+
+        <div class="mat-stats">
+
+          <div class="mat-stat"><div class="mat-stat-val">Alta</div><div class="mat-stat-key">Difusión de Luz</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">No</div><div class="mat-stat-key">Transparente 100%</div></div>
+
+        </div>
+
+        <div class="mat-props">
+
+          <span class="mat-prop">Efecto Cristal</span><span class="mat-prop">Iluminación LED</span>
+
+        </div>
+
+        <div class="mat-uses">Aunque la impresión 3D no logra un cristal perfectamente transparente como una ventana (debido a las capas), estos materiales difuminan la luz de forma hermosa y vibrante. Esenciales para crear litofanías (fotos 3D retroiluminadas), difusores para tiras LED y lámparas custom.</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="mat-group-sep">
+
+    <div class="mat-group-sep-inner">
+
+      <div class="mat-group-sep-num">03</div>
+
+      <div class="mat-group-sep-info">
+
+        <div class="mat-group-sep-name">Reforzados e <span>Industriales</span></div>
+
+        <div class="mat-group-sep-desc">Fibras añadidas y polímeros de alto rendimiento. Requieren boquillas de acero endurecido.</div>
+
+      </div>
+
+    </div>
+
+    <div class="mat-group-sep-line"></div>
+
+  </div>
+
+
+
+  <div class="mat-grid mat-grid-3">
+
+    <div class="mat-card" style="--mc:#EC407A;" onclick="toggleMat(this)">
+
+      <div class="mat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?w=800&q=80');"></div>
+
+      <div class="mat-overlay"></div><div class="mat-accent-bar"></div>
+
+      <div class="mat-top">
+
+        <div class="mat-tag">Fricción y Engranajes</div>
+
+        <div class="mat-nozzle-badge">Cámara Cerrada</div>
+
+        <div class="mat-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+
+      </div>
+
+      <div class="mat-bottom">
+
+        <div class="mat-name">Nylon (Poliamida)</div>
+
+        <div class="mat-fullname">Polímero industrial PA6 / PA12</div>
+
+        <div class="mat-stats">
+
+          <div class="mat-stat"><div class="mat-stat-val">100<small>°C</small></div><div class="mat-stat-key">Temp. servicio</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Baja</div><div class="mat-stat-key">Fricción</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Alta</div><div class="mat-stat-key">Tenacidad</div></div>
+
+        </div>
+
+        <div class="mat-props">
+
+          <span class="mat-prop">Autolubricante</span><span class="mat-prop">Resiste Abrasión</span>
+
+        </div>
+
+        <div class="mat-uses">Material de ingeniería avanzado. Su principal característica es que tiene un rozamiento bajísimo y es extremadamente tenaz (absorbe mucha fuerza antes de romperse). Es la opción obligatoria para imprimir engranajes funcionales, cojinetes, guías y elementos sometidos a rozamiento constante.</div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="mat-card" style="--mc:#78909C;" onclick="toggleMat(this)">
+
+      <div class="mat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1508962914676-134849a727f0?w=800&q=80&auto=format&fit=crop');"></div>
+
+      <div class="mat-overlay"></div><div class="mat-accent-bar"></div>
+
+      <div class="mat-top">
+
+        <div class="mat-tag">Máxima Rigidez Ligera</div>
+
+        <div class="mat-nozzle-badge hardened">Boquilla Endurecida</div>
+
+        <div class="mat-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+
+      </div>
+
+      <div class="mat-bottom">
+
+        <div class="mat-name">Fibra de Carbono</div>
+
+        <div class="mat-fullname">Carbono inyectado en Nylon, PETG o PLA</div>
+
+        <div class="mat-stats">
+
+          <div class="mat-stat"><div class="mat-stat-val">Máx</div><div class="mat-stat-key">Rigidez Torsión</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Muy</div><div class="mat-stat-key">Ligero en Peso</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">No</div><div class="mat-stat-key">Se Dobla</div></div>
+
+        </div>
+
+        <div class="mat-props">
+
+          <span class="mat-prop">Acabado Premium</span><span class="mat-prop">Rendimiento Aero</span>
+
+        </div>
+
+        <div class="mat-uses">Plásticos base dopados con filamentos reales de fibra de carbono. Crean piezas extremadamente rígidas que no flexan bajo tensión y mantienen un peso pluma, con un agresivo color negro mate texturizado. Esenciales para chasis de drones de competición, soportes de robótica, RC y automovilismo.</div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="mat-card" style="--mc:#8D6E63;" onclick="toggleMat(this)">
+
+      <div class="mat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1595246140625-573b715d11dc?w=800&q=80&auto=format&fit=crop');"></div>
+
+      <div class="mat-overlay"></div><div class="mat-accent-bar"></div>
+
+      <div class="mat-top">
+
+        <div class="mat-tag">Impactos Fuertes</div>
+
+        <div class="mat-nozzle-badge hardened">Boquilla Endurecida</div>
+
+        <div class="mat-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+
+      </div>
+
+      <div class="mat-bottom">
+
+        <div class="mat-name">Fibra de Vidrio</div>
+
+        <div class="mat-fullname">Vidrio inyectado en bases de ABS y Nylon</div>
+
+        <div class="mat-stats">
+
+          <div class="mat-stat"><div class="mat-stat-val">Máx</div><div class="mat-stat-key">Res. Impacto Seco</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Alta</div><div class="mat-stat-key">Estabilidad Forma</div></div>
+
+        </div>
+
+        <div class="mat-props">
+
+          <span class="mat-prop">Aislante</span><span class="mat-prop">Soporta Golpes</span>
+
+        </div>
+
+        <div class="mat-uses">A diferencia de la rigidez extrema de la fibra de carbono, la fibra de vidrio aporta a la pieza una enorme tenacidad contra impactos secos y golpes violentos, evitando que colapse o estalle. Mejora el aislamiento térmico y eléctrico. Idónea para carcasas de taladros y herramientas eléctricas pesadas.</div>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="mat-card" style="--mc:#26C6DA;" onclick="toggleMat(this)">
+
+      <div class="mat-img-bg" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80&auto=format&fit=crop');"></div>
+
+      <div class="mat-overlay"></div><div class="mat-accent-bar"></div>
+
+      <div class="mat-top">
+
+        <div class="mat-tag">Calor y Dureza Extrema</div>
+
+        <div class="mat-nozzle-badge hardened">Cámara a Alta Temp.</div>
+
+        <div class="mat-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+
+      </div>
+
+      <div class="mat-bottom">
+
+        <div class="mat-name">Policarbonato (PC)</div>
+
+        <div class="mat-fullname">Resistencia térmica e industrial superior</div>
+
+        <div class="mat-stats">
+
+          <div class="mat-stat"><div class="mat-stat-val">125<small>°C</small></div><div class="mat-stat-key">Temp. Máxima</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Máx</div><div class="mat-stat-key">Dureza Física</div></div>
+
+          <div class="mat-stat"><div class="mat-stat-val">Sí</div><div class="mat-stat-key">Ignífugo (Opt)</div></div>
+
+        </div>
+
+        <div class="mat-props">
+
+          <span class="mat-prop">Piezas de Motor</span><span class="mat-prop">Ingeniería Avanzada</span>
+
+        </div>
+
+        <div class="mat-uses">En la cumbre de lo que puede lograr una impresora profesional. El PC es uno de los plásticos más duros y resistentes térmicamente, superando los 115 grados continuos sin deformarse ni derretirse. Se exige para piezas bajo el capó de vehículos, carcasas ignífugas y componentes sometidos a altísimo estrés.</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+</section>
+
+
+
+<section class="quote-section" id="presupuesto">
+
+  <div class="quote-inner">
+
+    <div class="quote-header">
+      <span class="section-label">Sin compromiso · Respuesta rápida</span>
+      <div class="section-title">Pide tu Presupuesto</div>
+      <p>Cuéntanos tu proyecto y te respondemos en menos de 24 horas. Aceptamos STL, STEP, OBJ, planos PDF o simplemente una descripción con tus ideas.</p>
+    </div>
+
+    <form class="quote-form" name="presupuesto" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="quote-form" novalidate>
+
+      <input type="hidden" name="form-name" value="presupuesto" />
+      <p style="display:none"><input name="bot-field" /></p>
+
+      <div class="field">
+        <label for="qf-nombre">Nombre *</label>
+        <input type="text" id="qf-nombre" name="nombre" placeholder="Tu nombre completo" required />
+      </div>
+
+      <div class="field">
+        <label for="qf-email">Email *</label>
+        <input type="email" id="qf-email" name="email" placeholder="tu@correo.com" required />
+      </div>
+
+      <div class="field">
+        <label for="qf-telefono">Teléfono / WhatsApp</label>
+        <input type="tel" id="qf-telefono" name="telefono" placeholder="Opcional, para contacto directo" />
+      </div>
+
+      <div class="field">
+        <label for="qf-categoria">Tipo de proyecto *</label>
+        <select id="qf-categoria" name="categoria" required>
+          <option value="" disabled selected>Selecciona una categoría</option>
+          <option>Decoración del hogar</option>
+          <option>Joyería y complementos</option>
+          <option>Regalos y personalización</option>
+          <option>Juguetes y educación</option>
+          <option>Figuras y coleccionables</option>
+          <option>Arte y escultura</option>
+          <option>Cosplay y escenografía</option>
+          <option>Maquetas y modelismo</option>
+          <option>Piezas de repuesto</option>
+          <option>Herramientas y soportes</option>
+          <option>Electrónica y tecnología</option>
+          <option>Prototipos y desarrollo</option>
+          <option>Otro</option>
+        </select>
+      </div>
+
+      <div class="field field-full">
+        <label for="qf-descripcion">Descripción del proyecto *</label>
+        <textarea id="qf-descripcion" name="descripcion" placeholder="Describe qué necesitas: dimensiones aproximadas, cantidad de unidades, material preferido (si lo sabes), o adjunta información de referencia." required></textarea>
+      </div>
+
+      <div class="quote-submit field-full">
+        <p class="quote-submit-note">Al enviar aceptas que nos pongamos en contacto contigo para responder a tu consulta.</p>
+        <button type="submit" class="btn-submit" id="quote-btn">Enviar Consulta</button>
+      </div>
+
+      <div class="quote-msg" id="quote-msg"></div>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+
+<section class="contact-section">
+
+  <div class="contact-text">
+
+    <h2>¿Tienes un proyecto?<br>Lo hacemos <span class="o">Realidad.</span></h2>
+
+    <p>Pídenos presupuesto sin ningún tipo de compromiso. Aceptamos todo tipo de formatos de archivo: STL, STEP, OBJ, bocetos dibujados a mano, planos en PDF o simples fotografías con cotas de medida. Respuesta ágil e inmediata.</p>
+
+  </div>
+
+  <div class="contact-info">
+
+    <div class="ci">
+
+      <div class="ci-icon">
+
+        <svg viewBox="0 0 24 24">
+
+          <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
+
+        </svg>
+
+      </div>
+
+      <div class="ci-details">
+
+        <span class="ci-label">WhatsApp de Atención Directa</span>
+
+        <a href="https://wa.me/34653924540" target="_blank" class="ci-val">653 924 540</a>
+
+      </div>
+
+    </div>
+
+    <div class="ci">
+
+      <div class="ci-icon">
+
+        <svg viewBox="0 0 24 24">
+
+          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+
+        </svg>
+
+      </div>
+
+      <div class="ci-details">
+
+        <span class="ci-label">Correo Electrónico de Presupuestos</span>
+
+        <a href="mailto:formaycapas@gmail.com" class="ci-val">formaycapas@gmail.com</a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<footer>
+
+  &copy; 2026 Forma y Capas Valencia · Estudio Técnico de Diseño e Impresión 3D Profesional
+
+</footer>
+
+
+
+<script>
+
+  function toggleCat(el) {
+
+    el.classList.toggle('cat-open');
+
+  }
+
+  function toggleMat(el) {
+
+    el.classList.toggle('open');
+
+  }
+
+  (function() {
+    const form = document.getElementById('quote-form');
+    const btn = document.getElementById('quote-btn');
+    const msg = document.getElementById('quote-msg');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const nombre = form.querySelector('[name="nombre"]').value.trim();
+      const email = form.querySelector('[name="email"]').value.trim();
+      const categoria = form.querySelector('[name="categoria"]').value;
+      const descripcion = form.querySelector('[name="descripcion"]').value.trim();
+
+      if (!nombre || !email || !categoria || !descripcion) {
+        showMsg('error', 'Por favor, rellena todos los campos obligatorios (*).');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Enviando…';
+      msg.className = 'quote-msg';
+      msg.style.display = 'none';
+
+      try {
+        const res = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(form)).toString(),
+        });
+
+        if (res.ok) {
+          showMsg('success', '¡Consulta enviada! Te responderemos en menos de 24 horas.');
+          form.reset();
+        } else {
+          showMsg('error', 'Error al enviar. Por favor, escríbenos directamente a formaycapas@gmail.com');
+        }
+      } catch (_) {
+        showMsg('error', 'Error de red. Comprueba tu conexión e inténtalo de nuevo.');
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Enviar Consulta';
+    });
+
+    function showMsg(type, text) {
+      msg.className = 'quote-msg ' + type;
+      msg.textContent = text;
+    }
+  })();
+
+</script>
+
+
+
+</body>
+
+</html>
