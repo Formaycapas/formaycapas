@@ -150,6 +150,8 @@ body { background:#0e0e0e; font-family:'Barlow',sans-serif; color:#fff; -webkit-
 
 .cat-card.cat-open .cat-extra { max-height:220px; opacity:1; margin-top:10px; border-top-color:rgba(232,119,34,0.2); padding-top:10px; }
 
+.cat-extra-mobile { display:none; }
+
 
 
 /* ================= SECCIÓN MATERIALES & MÁQUINA ================= */
@@ -453,12 +455,17 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
   /* Grid categorías — 2 columnas para ver más de un vistazo */
   .cat-grid { grid-template-columns: repeat(2, 1fr); padding: 0 6px 6px; }
   .cat-card { height: 148px; }
-  .cat-card.cat-open { height: 390px; }
+  .cat-card.cat-open { height: 360px; }
   .cat-content { padding: 10px 12px 12px; }
   .cat-num { font-size: 10px; letter-spacing: 2px; }
   .cat-name { font-size: 15px; letter-spacing: -0.3px; }
   .cat-desc { font-size: 11px; line-height: 1.4; }
   .cat-chevron { width: 22px; height: 22px; font-size: 10px; top: 10px; right: 10px; }
+
+  /* Texto expandible en móvil: ocultar versión larga, mostrar versión corta */
+  .cat-extra { display: none !important; }
+  .cat-extra-mobile { display: block; font-size:12px; color:#aaa; line-height:1.5; max-height:0; overflow:hidden; opacity:0; transition: max-height 0.4s 0.05s, opacity 0.3s 0.15s; margin-top:0; border-top:1px solid transparent; }
+  .cat-card.cat-open .cat-extra-mobile { max-height:180px; opacity:1; margin-top:8px; border-top-color:rgba(232,119,34,0.2); padding-top:8px; }
 
   /* Cabecera materiales */
   .materials-header { padding: 36px 20px 14px; }
@@ -606,6 +613,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
       <p class="cat-desc">Lo que no existe en tienda, lo fabricamos. Diseño único a medida de tu espacio.</p>
 
       <div class="cat-extra">Lámparas con geometrías imposibles de moldear, macetas con formas orgánicas, números de casa, letras tridimensionales, portavelas, cuencos decorativos y marcos personalizados. Si tienes una foto de referencia o una idea en la cabeza, es suficiente.</div>
+      <div class="cat-extra-mobile">Lámparas, macetas, letras 3D, números de casa y marcos a medida. Si tienes una foto o idea, lo fabricamos.</div>
 
     </div>
 
@@ -626,6 +634,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
       <p class="cat-desc">Geometrías que ningún joyero haría a mano. Piezas de autor sin coste de molde.</p>
 
       <div class="cat-extra">Pendientes con estructuras caladas, anillos con texturas algorítmicas, broches y hebillas a medida, collares de diseño propio, botones personalizados y accesorios para el pelo. También fabricamos tirajes pequeños para diseñadores.</div>
+      <div class="cat-extra-mobile">Pendientes calados, anillos con texturas, broches y collares de diseño propio. También series pequeñas para diseñadores.</div>
 
     </div>
 
@@ -646,6 +655,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
       <p class="cat-desc">Un regalo que solo existe en el mundo porque tú lo pediste. 100% irrepetible.</p>
 
       <div class="cat-extra">Figuras de novios para la tarta, joyeros con iniciales grabadas, trofeos y reconocimientos únicos, réplicas en miniatura de lugares especiales, detalles de boda personalizados y recuerdos en relieve. Desde una unidad, con entrega rápida.</div>
+      <div class="cat-extra-mobile">Figuras de novios, joyeros con iniciales, trofeos únicos y recuerdos en relieve. Desde una unidad, entrega rápida.</div>
 
     </div>
 
@@ -666,6 +676,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
       <p class="cat-desc">Tocar para entender. Objetos físicos que hacen que conceptos abstractos se vuelvan concretos.</p>
 
       <div class="cat-extra">Modelos anatómicos para clase de biología, sólidos geométricos y fracciones manipulativas, piezas táctiles para alumnos con necesidades especiales, kits de robótica personalizados y juguetes sensoriales. Diseñamos material didáctico desde cero para docentes.</div>
+      <div class="cat-extra-mobile">Modelos anatómicos, sólidos geométricos, piezas táctiles y kits de robótica. Material didáctico personalizado para docentes.</div>
 
     </div>
 
@@ -700,6 +711,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
       <p class="cat-desc">Si existe en digital, lo hacemos físico. Precisión de décimas de milímetro.</p>
 
       <div class="cat-extra">Personajes de anime, videojuegos y películas. Miniaturas para D&D y Warhammer listas para pintar. Bustos y retratos escultóricos. Réplicas de armas a escala real. Tráenos el archivo STL o la imagen de referencia — hacemos el resto.</div>
+      <div class="cat-extra-mobile">Personajes de anime, videojuegos y películas. Miniaturas para D&D y Warhammer. Réplicas a escala real. Tráenos el STL o una imagen.</div>
 
     </div>
 
@@ -720,6 +732,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
       <p class="cat-desc">La impresión 3D permite construir geometrías que ninguna mano ni torno podría producir.</p>
 
       <div class="cat-extra">Superficies generativas y matemáticas, esculturas orgánicas de autor, instalaciones para galerías y exposiciones, elementos de escenografía y atrezzo. Trabajamos con artistas para materializar sus ideas digitales, en cualquier tamaño y material.</div>
+      <div class="cat-extra-mobile">Esculturas orgánicas, superficies generativas e instalaciones para galerías. Materializamos ideas digitales de artistas en cualquier tamaño.</div>
 
     </div>
 
@@ -740,6 +753,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
       <p class="cat-desc">Piezas cortadas exactamente a tu cuerpo. Tu personaje, con tus medidas reales.</p>
 
       <div class="cat-extra">Cascos, hombreras, pecheras y armaduras a medida. Props funcionales para teatro, cine y fotografía: espadas, escudos, armas futuristas. También fabricamos elementos de atrezzo para producciones — desde una unidad hasta series completas.</div>
+      <div class="cat-extra-mobile">Cascos, armaduras y pecheras a tus medidas. Props para teatro y cine: espadas, escudos y armas. Desde una unidad hasta series completas.</div>
 
     </div>
 
@@ -760,6 +774,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
       <p class="cat-desc">Una maqueta física en una reunión o concurso cambia completamente la percepción.</p>
 
       <div class="cat-extra">Edificios y urbanizaciones a escala desde planos DWG o PDF. Modelos de concursos de arquitectura. Dioramas para modelismo militar o ferroviario. Terrenos, vehículos y accesorios. Fabricamos por partes para proyectos grandes.</div>
+      <div class="cat-extra-mobile">Edificios a escala desde planos DWG, maquetas de arquitectura y dioramas militares o ferroviarios. Por partes para proyectos grandes.</div>
 
     </div>
 
@@ -794,6 +809,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
       <p class="cat-desc">No tires lo que se puede reparar. Si la pieza no se fabrica, nosotros la replicamos.</p>
 
       <div class="cat-extra">Perillas de electrodomésticos, clips y cierres rotos, componentes de coches clásicos y motos, engranajes de maquinaria. Tráenos la pieza original o una foto con medidas y estudiamos la viabilidad sin compromiso para que el ajuste sea perfecto.</div>
+      <div class="cat-extra-mobile">Perillas, clips, cierres y engranajes rotos o descatalogados. Tráenos la pieza original o una foto con medidas y lo replicamos.</div>
 
     </div>
 
@@ -814,6 +830,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
       <p class="cat-desc">El utillaje a medida elimina el tiempo perdido buscando soluciones que no existen.</p>
 
       <div class="cat-extra">Soportes de montaje para cámaras o sensores. Organizadores de taller. Adaptadores entre estándares incompatibles. Plantillas de taladrado y guías de montaje. Piezas de fijación personalizadas para líneas de producción o instalaciones a medida.</div>
+      <div class="cat-extra-mobile">Soportes de montaje, organizadores de taller, adaptadores y plantillas de taladrado. Utillaje a medida para taller o producción.</div>
 
     </div>
 
@@ -834,6 +851,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
       <p class="cat-desc">Tu proyecto de electrónica merece una carcasa a su altura, totalmente a medida.</p>
 
       <div class="cat-extra">Cajas a medida para Raspberry Pi, Arduino, ESP32 y placas custom. Carcasas para proyectos de IoT y domótica. Soportes para pantallas y baterías. Módulos DIN. Si tienes el PCB, diseñamos la caja que lo protege y lo presenta bien.</div>
+      <div class="cat-extra-mobile">Cajas para Raspberry Pi, Arduino y ESP32. Carcasas para IoT y domótica. Si tienes el PCB, diseñamos la caja a medida.</div>
 
     </div>
 
@@ -854,6 +872,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
       <p class="cat-desc">Del archivo al objeto en 24h. Itera sin esperar semanas ni pagar costosos moldes.</p>
 
       <div class="cat-extra">Prototipos funcionales para validar ergonomía y concepto antes de producción. Modelos de presentación para inversores o ferias. Utillaje para líneas de producción. Series de 1 a 100 unidades con plazos cortos. Consulta presupuesto sin compromiso.</div>
+      <div class="cat-extra-mobile">Del archivo al objeto en 24h. Prototipos funcionales, modelos para inversores y series de 1 a 100 unidades. Sin compromiso.</div>
 
     </div>
 
@@ -1649,10 +1668,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
       <p>Cuéntanos tu proyecto y te respondemos en menos de 24 horas. Aceptamos STL, STEP, OBJ, planos PDF o simplemente una descripción con tus ideas.</p>
     </div>
 
-    <form class="quote-form" name="presupuesto" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="quote-form" novalidate>
-
-      <input type="hidden" name="form-name" value="presupuesto" />
-      <p style="display:none"><input name="bot-field" /></p>
+    <form class="quote-form" id="quote-form" novalidate>
 
       <div class="field">
         <label for="qf-nombre">Nombre *</label>
@@ -1794,6 +1810,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
   }
 
   (function() {
+    const FORMSPREE_ID = 'mgoqokwo';
     const form = document.getElementById('quote-form');
     const btn = document.getElementById('quote-btn');
     const msg = document.getElementById('quote-msg');
@@ -1803,6 +1820,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
 
       const nombre = form.querySelector('[name="nombre"]').value.trim();
       const email = form.querySelector('[name="email"]').value.trim();
+      const telefono = form.querySelector('[name="telefono"]').value.trim();
       const categoria = form.querySelector('[name="categoria"]').value;
       const descripcion = form.querySelector('[name="descripcion"]').value.trim();
 
@@ -1817,17 +1835,17 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
       msg.style.display = 'none';
 
       try {
-        const res = await fetch('/', {
+        const res = await fetch('https://formspree.io/f/' + FORMSPREE_ID, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams(new FormData(form)).toString(),
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nombre, email, telefono, categoria, descripcion }),
         });
 
         if (res.ok) {
           showMsg('success', '¡Consulta enviada! Te responderemos en menos de 24 horas.');
           form.reset();
         } else {
-          showMsg('error', 'Error al enviar. Por favor, escríbenos directamente a formaycapas@gmail.com');
+          showMsg('error', 'Error al enviar. Escríbenos a formaycapas@gmail.com');
         }
       } catch (_) {
         showMsg('error', 'Error de red. Comprueba tu conexión e inténtalo de nuevo.');
