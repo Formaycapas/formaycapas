@@ -489,7 +489,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
   /* Grid materiales — 2 cols para grupos 01/02, variantes en 1 col para legibilidad */
   .mat-grid-3 { grid-template-columns: repeat(2, 1fr); padding: 0 6px; }
   .mat-card { height: 148px; }
-  .mat-card.open { height: 420px; }
+  .mat-card.open { grid-column: 1 / -1 !important; height: 300px; }
 
   /* Grupo 03 — tarjetas familia: variantes en 1 columna para no cortar texto */
   /* variantes: 2 col con tarjeta a ancho completo son legibles */
@@ -508,11 +508,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
   .mat-props, .mat-card.open .mat-props { max-height: 0 !important; opacity: 0 !important; margin-bottom: 0 !important; }
   .mat-fullname, .mat-card.open .mat-fullname { max-height: 0 !important; opacity: 0 !important; margin-top: 0 !important; margin-bottom: 0 !important; }
   .mat-uses { font-size: 12px; line-height: 1.45; }
-  .mat-card.open .mat-uses { max-height: 230px; }
-
-  .mat-uses { display:none !important; }
-  .mat-uses-s { display:block !important; font-size:11px; color:#ccc; line-height:1.5; max-height:0; overflow:hidden; opacity:0; transition: max-height 0.4s 0.16s, opacity 0.3s 0.26s; }
-  .mat-card.open .mat-uses-s { max-height:160px !important; opacity:1 !important; padding-top:8px; }
+  .mat-card.open .mat-uses { max-height: 200px; }
 
   /* Contacto */
   .contact-section { gap: 24px; padding: 34px 20px; margin-top: 30px; }
