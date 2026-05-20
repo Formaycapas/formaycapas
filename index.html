@@ -484,11 +484,19 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
   .mat-group-sep-name { font-size: 15px; }
   .mat-group-sep-desc { font-size: 10px; }
 
-  /* Grid materiales — 2 columnas, sin stats ni pills para que quepa */
+  /* Grid materiales — 2 cols para grupos 01/02, variantes en 1 col para legibilidad */
   .mat-grid-3 { grid-template-columns: repeat(2, 1fr); padding: 0 6px; }
   .mat-card { height: 148px; }
   .mat-card.open { height: 420px; }
-  .fam-card.open { height: 540px !important; }
+
+  /* Grupo 03 — tarjetas familia: variantes en 1 columna para no cortar texto */
+  .mat-variants { grid-template-columns: 1fr !important; }
+  .mat-card.open .mat-variants { max-height: 560px; }
+  /* Altura suficiente para la CF (9 variantes) que es la más larga */
+  .fam-card.open { height: 720px !important; }
+
+  /* Tag: no partir en 2 líneas en tarjetas estrechas */
+  .mat-tag { font-size: 9px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: calc(100% - 28px); }
   .mat-top { padding: 10px 12px 0; }
   .mat-nozzle-badge { display: none; }
   .mat-bottom { padding: 10px 12px 14px; }
@@ -499,6 +507,10 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
   .mat-fullname, .mat-card.open .mat-fullname { max-height: 0 !important; opacity: 0 !important; margin-top: 0 !important; margin-bottom: 0 !important; }
   .mat-uses { font-size: 12px; line-height: 1.45; }
   .mat-card.open .mat-uses { max-height: 230px; }
+
+  .mat-uses { display:none !important; }
+  .mat-uses-s { display:block; font-size:11px; color:#ccc; line-height:1.5; max-height:0; overflow:hidden; opacity:0; transition: max-height 0.4s 0.16s, opacity 0.3s 0.26s; }
+  .mat-card.open .mat-uses-s { max-height:160px; opacity:1; padding-top:8px; }
 
   /* Contacto */
   .contact-section { gap: 24px; padding: 34px 20px; margin-top: 30px; }
@@ -518,6 +530,8 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
 .mat-card.open .mat-fam-note { max-height:40px; opacity:1; border-top-color:rgba(255,255,255,0.05); padding-top:8px; }
 .fam-card.open { height:600px !important; }
 
+
+.mat-uses-s { display:none; }
 </style>
 
 </head>
@@ -989,7 +1003,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
         <div class="mat-fullname">Ácido Poliláctico · Rígido y Preciso</div>
         <div class="mat-stats"><div class="mat-stat"><div class="mat-stat-val">60°C</div><div class="mat-stat-key">Temp. servicio</div></div><div class="mat-stat"><div class="mat-stat-val">Alto</div><div class="mat-stat-key">Detalle Visual</div></div><div class="mat-stat"><div class="mat-stat-val">No</div><div class="mat-stat-key">Exteriores</div></div></div>
         <div class="mat-props"><span class="mat-prop">Todo color</span><span class="mat-prop">Bajo Coste</span><span class="mat-prop">Fácil de Pintar</span></div>
-        <div class="mat-uses">El todoterreno de la impresión 3D: rígido, económico y en cualquier color. Ideal para prototipos, maquetas de arquitectura y objetos decorativos de interior.</div>
+        <div class="mat-uses">El todoterreno de la impresión 3D: rígido, económico y en cualquier color. Ideal para prototipos, maquetas de arquitectura y objetos decorativos de interior.</div><div class="mat-uses-s">Rígido, económico y en cualquier color. Ideal para prototipos, maquetas y objetos decorativos.</div>
       </div>
     </div>
     <div class="mat-card" style="--mc:#42A5F5;" onclick="toggleMat(this)">
@@ -1005,7 +1019,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
         <div class="mat-fullname">Resistente a impactos y humedad</div>
         <div class="mat-stats"><div class="mat-stat"><div class="mat-stat-val">80°C</div><div class="mat-stat-key">Temp. servicio</div></div><div class="mat-stat"><div class="mat-stat-val">Alta</div><div class="mat-stat-key">Res. Química</div></div><div class="mat-stat"><div class="mat-stat-val">Sí</div><div class="mat-stat-key">Uso Funcional</div></div></div>
         <div class="mat-props"><span class="mat-prop">Más Tenaz que PLA</span><span class="mat-prop">Soporta Agua</span></div>
-        <div class="mat-uses">El mismo plástico de las botellas de agua: tolera golpes, humedad y agentes químicos sin degradarse. Perfecto para soportes de taller, fundas protectoras y macetas funcionales.</div>
+        <div class="mat-uses">El mismo plástico de las botellas de agua: tolera golpes, humedad y agentes químicos sin degradarse. Perfecto para soportes de taller, fundas protectoras y macetas funcionales.</div><div class="mat-uses-s">Tolera golpes, humedad y químicos. Perfecto para soportes, fundas y macetas funcionales.</div>
       </div>
     </div>
     <div class="mat-card" style="--mc:#FFC107;" onclick="toggleMat(this)">
@@ -1021,7 +1035,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
         <div class="mat-fullname">Plástico industrial mecanizable</div>
         <div class="mat-stats"><div class="mat-stat"><div class="mat-stat-val">105°C</div><div class="mat-stat-key">Temp. servicio</div></div><div class="mat-stat"><div class="mat-stat-val">Alta</div><div class="mat-stat-key">Res. Impacto</div></div><div class="mat-stat"><div class="mat-stat-val">Sí</div><div class="mat-stat-key">Acetonado</div></div></div>
         <div class="mat-props"><span class="mat-prop">Fácil de Lijar</span><span class="mat-prop">Alisado con Acetona</span></div>
-        <div class="mat-uses">El plástico de los ladrillos LEGO y piezas de coche: resiste impactos y calor. Se puede alisar con vapor de acetona hasta quedar completamente liso y brillante.</div>
+        <div class="mat-uses">El plástico de los ladrillos LEGO y piezas de coche: resiste impactos y calor. Se puede alisar con vapor de acetona hasta quedar completamente liso y brillante.</div><div class="mat-uses-s">Resiste impactos y calor. Se alisa con acetona hasta quedar completamente liso.</div>
       </div>
     </div>
     <div class="mat-card" style="--mc:#AB47BC;" onclick="toggleMat(this)">
@@ -1037,7 +1051,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
         <div class="mat-fullname">La evolución del ABS para el sol</div>
         <div class="mat-stats"><div class="mat-stat"><div class="mat-stat-val">95°C</div><div class="mat-stat-key">Temp. servicio</div></div><div class="mat-stat"><div class="mat-stat-val">Máx</div><div class="mat-stat-key">Resistencia UV</div></div><div class="mat-stat"><div class="mat-stat-val">No</div><div class="mat-stat-key">Amarillea</div></div></div>
         <div class="mat-props"><span class="mat-prop">Intemperie Total</span><span class="mat-prop">Automoción</span></div>
-        <div class="mat-uses">Como el ABS pero diseñado para la intemperie: resistencia UV excepcional, no amarillea ni se degrada al sol. El material para exteriores, jardín y automoción.</div>
+        <div class="mat-uses">Como el ABS pero diseñado para la intemperie: resistencia UV excepcional, no amarillea ni se degrada al sol. El material para exteriores, jardín y automoción.</div><div class="mat-uses-s">Resistencia UV total. No amarillea al sol. El material para exteriores y automoción.</div>
       </div>
     </div>
     <div class="mat-card" style="--mc:#FF7043;" onclick="toggleMat(this)">
@@ -1053,7 +1067,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
         <div class="mat-fullname">Elastómero flexible · 87A, 95A y TPE disponibles</div>
         <div class="mat-stats"><div class="mat-stat"><div class="mat-stat-val">Alto</div><div class="mat-stat-key">Desgaste</div></div><div class="mat-stat"><div class="mat-stat-val">Sí</div><div class="mat-stat-key">Elástico</div></div><div class="mat-stat"><div class="mat-stat-val">Sí</div><div class="mat-stat-key">Amortigua</div></div></div>
         <div class="mat-props"><span class="mat-prop">Antideslizante</span><span class="mat-prop">Absorbe Golpes</span></div>
-        <div class="mat-uses">Goma flexible con memoria elástica: vuelve a su forma al doblarse y es antideslizante. Perfecto para juntas de estanqueidad, suelas a medida y fundas resistentes a golpes.</div>
+        <div class="mat-uses">Goma flexible con memoria elástica: vuelve a su forma al doblarse y es antideslizante. Perfecto para juntas de estanqueidad, suelas a medida y fundas resistentes a golpes.</div><div class="mat-uses-s">Goma flexible antideslizante. Juntas de estanqueidad, suelas a medida y fundas.</div>
       </div>
     </div>
     <div class="mat-card" style="--mc:#29B6F6;" onclick="toggleMat(this)">
@@ -1069,7 +1083,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
         <div class="mat-fullname">Poliamida 12 · El ingeniero cotidiano</div>
         <div class="mat-stats"><div class="mat-stat"><div class="mat-stat-val">100°C</div><div class="mat-stat-key">Temp. servicio</div></div><div class="mat-stat"><div class="mat-stat-val">Baja</div><div class="mat-stat-key">Fricción</div></div><div class="mat-stat"><div class="mat-stat-val">Alta</div><div class="mat-stat-key">Tenacidad</div></div></div>
         <div class="mat-props"><span class="mat-prop">Autolubricante</span><span class="mat-prop">Resiste Abrasión</span></div>
-        <div class="mat-uses">Rozamiento bajísimo y altísima tenacidad: absorbe mucha fuerza antes de romperse. Ideal para engranajes funcionales, cojinetes, guías y bisagras de uso intensivo.</div>
+        <div class="mat-uses">Rozamiento bajísimo y altísima tenacidad: absorbe mucha fuerza antes de romperse. Ideal para engranajes funcionales, cojinetes, guías y bisagras de uso intensivo.</div><div class="mat-uses-s">Rozamiento mínimo y alta tenacidad. Engranajes, cojinetes y bisagras de uso intensivo.</div>
       </div>
     </div>
   </div>
@@ -1101,7 +1115,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
         <div class="mat-fullname">Plásticos texturizados con contraste</div>
         <div class="mat-stats"><div class="mat-stat"><div class="mat-stat-val">Máx</div><div class="mat-stat-key">Oculta Capas</div></div><div class="mat-stat"><div class="mat-stat-val">Mate</div><div class="mat-stat-key">Acabado</div></div></div>
         <div class="mat-props"><span class="mat-prop">Efecto Escultura</span><span class="mat-prop">Aspecto Mineral</span></div>
-        <div class="mat-uses">Micropartículas que imitan la textura de la piedra y disimulan casi al 100% las líneas de impresión. Ideal para bustos, columnas y macetas de aspecto mineral.</div>
+        <div class="mat-uses">Micropartículas que imitan la textura de la piedra y disimulan casi al 100% las líneas de impresión. Ideal para bustos, columnas y macetas de aspecto mineral.</div><div class="mat-uses-s">Imita la textura de la piedra. Bustos, columnas y macetas de aspecto mineral.</div>
       </div>
     </div>
     <div class="mat-card" style="--mc:#F1C40F;" onclick="toggleMat(this)">
@@ -1117,7 +1131,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
         <div class="mat-fullname">Silk sedoso, Galaxy con purpurina, Metal cromado</div>
         <div class="mat-stats"><div class="mat-stat"><div class="mat-stat-val">Alto</div><div class="mat-stat-key">Brillo Reflectante</div></div><div class="mat-stat"><div class="mat-stat-val">Baja</div><div class="mat-stat-key">Resistencia Fuerte</div></div></div>
         <div class="mat-props"><span class="mat-prop">Silk · Seda</span><span class="mat-prop">Galaxy · Purpurina</span><span class="mat-prop">Metallic · Cromo</span></div>
-        <div class="mat-uses">Tres acabados espectaculares: Silk refleja como seda satinada, Galaxy añade destellos metálicos con purpurina, Metallic simula cromo fundido. Ideales para figuras coleccionables, joyas impresas y trofeos premium.</div>
+        <div class="mat-uses">Tres acabados espectaculares: Silk refleja como seda satinada, Galaxy añade destellos metálicos con purpurina, Metallic simula cromo fundido. Ideales para figuras coleccionables, joyas impresas y trofeos premium.</div><div class="mat-uses-s">Silk satinado, Galaxy con purpurina o Metallic cromado. Figuras, joyas y trofeos premium.</div>
       </div>
     </div>
     <div class="mat-card" style="--mc:#34495E;" onclick="toggleMat(this)">
@@ -1133,7 +1147,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
         <div class="mat-fullname">Cero reflejos para un look profesional</div>
         <div class="mat-stats"><div class="mat-stat"><div class="mat-stat-val">Nulo</div><div class="mat-stat-key">Brillo Plástico</div></div><div class="mat-stat"><div class="mat-stat-val">Alta</div><div class="mat-stat-key">Elegancia Visual</div></div></div>
         <div class="mat-props"><span class="mat-prop">Aspecto Inyectado</span><span class="mat-prop">Sobrio</span></div>
-        <div class="mat-uses">Absorbe la luz completamente, eliminando el brillo plástico y disimulando imperfecciones. Aspecto sobrio y profesional para carcasas de electrónica y equipos de oficina.</div>
+        <div class="mat-uses">Absorbe la luz completamente, eliminando el brillo plástico y disimulando imperfecciones. Aspecto sobrio y profesional para carcasas de electrónica y equipos de oficina.</div><div class="mat-uses-s">Sin brillo plástico, disimula imperfecciones. Carcasas y equipos de aspecto profesional.</div>
       </div>
     </div>
     <div class="mat-card" style="--mc:#D35400;" onclick="toggleMat(this)">
@@ -1149,7 +1163,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
         <div class="mat-fullname">PLA cargado con fibra de madera real</div>
         <div class="mat-stats"><div class="mat-stat"><div class="mat-stat-val">Sí</div><div class="mat-stat-key">Lijable como Madera</div></div><div class="mat-stat"><div class="mat-stat-val">Sí</div><div class="mat-stat-key">Barnizable</div></div></div>
         <div class="mat-props"><span class="mat-prop">Olor Real</span><span class="mat-prop">Tacto Rústico</span></div>
-        <div class="mat-uses">Contiene polvo de madera real: huele, se toca y se ve como madera. Admite lijado, tintes y barnices para cajas rústicas, mangos de herramientas y esculturas.</div>
+        <div class="mat-uses">Contiene polvo de madera real: huele, se toca y se ve como madera. Admite lijado, tintes y barnices para cajas rústicas, mangos de herramientas y esculturas.</div><div class="mat-uses-s">Polvo de madera real: huele y se ve como madera. Se puede lijar, teñir y barnizar.</div>
       </div>
     </div>
     <div class="mat-card" style="--mc:#76D7C4;" onclick="toggleMat(this)">
@@ -1165,7 +1179,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
         <div class="mat-fullname">Plásticos puros sin pigmentación opaca</div>
         <div class="mat-stats"><div class="mat-stat"><div class="mat-stat-val">Alta</div><div class="mat-stat-key">Difusión de Luz</div></div><div class="mat-stat"><div class="mat-stat-val">No</div><div class="mat-stat-key">Transparente 100%</div></div></div>
         <div class="mat-props"><span class="mat-prop">Efecto Cristal</span><span class="mat-prop">Iluminación LED</span></div>
-        <div class="mat-uses">Difuminan la luz de forma hermosa aunque no son 100% transparentes. Esenciales para litofanías (fotos 3D retroiluminadas), difusores LED y lámparas a medida.</div>
+        <div class="mat-uses">Difuminan la luz de forma hermosa aunque no son 100% transparentes. Esenciales para litofanías (fotos 3D retroiluminadas), difusores LED y lámparas a medida.</div><div class="mat-uses-s">Difuminan la luz con elegancia. Litofanías, difusores LED y lámparas a medida.</div>
       </div>
     </div>
     <div class="mat-card" style="--mc:#C6FF00;" onclick="toggleMat(this)">
@@ -1181,7 +1195,7 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
         <div class="mat-fullname">Pigmento fosforescente · Acumula y emite luz</div>
         <div class="mat-stats"><div class="mat-stat"><div class="mat-stat-val">10min</div><div class="mat-stat-key">Carga Luz</div></div><div class="mat-stat"><div class="mat-stat-val">8h</div><div class="mat-stat-key">Duración Brillo</div></div><div class="mat-stat"><div class="mat-stat-val">PLA</div><div class="mat-stat-key">Base</div></div></div>
         <div class="mat-props"><span class="mat-prop">Decoración Nocturna</span><span class="mat-prop">Emergencias</span></div>
-        <div class="mat-uses">Acumula luz natural o artificial y la emite en la oscuridad durante horas. Perfecto para decoración nocturna, señalización de emergencia y piezas con efecto visual sorprendente.</div>
+        <div class="mat-uses">Acumula luz natural o artificial y la emite en la oscuridad durante horas. Perfecto para decoración nocturna, señalización de emergencia y piezas con efecto visual sorprendente.</div><div class="mat-uses-s">Acumula luz y brilla en la oscuridad durante horas. Decoración nocturna y señalización.</div>
       </div>
     </div>
   </div>
