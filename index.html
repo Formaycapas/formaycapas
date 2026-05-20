@@ -370,6 +370,8 @@ body { background:#0e0e0e; font-family:'Barlow',sans-serif; color:#fff; -webkit-
 
 .quote-msg.error { background: rgba(232,119,34,0.1); border: 1px solid rgba(232,119,34,0.3); color: #E87722; display: block; }
 
+.mat-uses-s { display:none; }
+
 @media(max-width:640px) {
   .quote-form { grid-template-columns: 1fr; }
   .quote-submit { flex-direction: column; align-items: stretch; text-align: center; }
@@ -509,8 +511,8 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
   .mat-card.open .mat-uses { max-height: 230px; }
 
   .mat-uses { display:none !important; }
-  .mat-uses-s { display:block; font-size:11px; color:#ccc; line-height:1.5; max-height:0; overflow:hidden; opacity:0; transition: max-height 0.4s 0.16s, opacity 0.3s 0.26s; }
-  .mat-card.open .mat-uses-s { max-height:160px; opacity:1; padding-top:8px; }
+  .mat-uses-s { display:block !important; font-size:11px; color:#ccc; line-height:1.5; max-height:0; overflow:hidden; opacity:0; transition: max-height 0.4s 0.16s, opacity 0.3s 0.26s; }
+  .mat-card.open .mat-uses-s { max-height:160px !important; opacity:1 !important; padding-top:8px; }
 
   /* Contacto */
   .contact-section { gap: 24px; padding: 34px 20px; margin-top: 30px; }
@@ -531,7 +533,6 @@ footer { background:#0a0a0a; border-top:1px solid #1a1a1a; padding:24px; text-al
 .fam-card.open { height:600px; }
 
 
-.mat-uses-s { display:none; }
 </style>
 
 </head>
