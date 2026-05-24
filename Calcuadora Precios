@@ -1,1 +1,943 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Precios — Forma y Capas</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Barlow:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87722;--ol:#ff9940;
+  --bg:#0d0d0d;--bg2:#141414;--bg3:#1a1a1a;
+  --border:rgba(255,255,255,.08);
+  --text:rgba(255,255,255,.85);--dim:rgba(255,255,255,.65);--faint:rgba(255,255,255,.55);
+  --green:#4caf82;--blue:#5b9bd5;--yellow:#f0c040;
+}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:56px 20px 80px}
+.topbar{position:fixed;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--orange),var(--ol));z-index:200}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--orange);color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:10px 24px;opacity:0;transition:all .25s;pointer-events:none;z-index:999}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.wrap{max-width:700px;margin:0 auto}
 
+/* HEADER */
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.ln{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;letter-spacing:.05em;text-transform:uppercase;line-height:1}
+.ln .y{color:var(--orange)}
+.ls{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.28em;color:var(--faint);text-transform:uppercase;margin-top:3px}
+.hdr-r{text-align:right}
+.ver{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.2em;color:rgba(255,255,255,.55);text-transform:uppercase}
+.savebadge{display:inline-flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.2em;color:var(--faint);text-transform:uppercase;transition:color .3s;margin-top:3px}
+.savebadge.saved{color:rgba(100,220,100,.5)}
+.sdot{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:46px;text-transform:uppercase;line-height:.92;margin-bottom:6px}
+h1 span{color:var(--orange)}
+.sub{font-size:13px;color:var(--dim);margin-bottom:28px;line-height:1.6;max-width:560px}
+
+/* SECCIONES */
+.sec{background:var(--bg2);border:1px solid var(--border);padding:22px 24px;margin-bottom:10px}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.35em;color:#ff7a1a;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.bdg{background:var(--orange);color:#000;font-size:9px;padding:2px 7px;font-weight:900;font-family:'Barlow Condensed',sans-serif}
+.bdg.bl{background:var(--blue)}
+.bdg.gr{background:var(--green)}
+
+label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:6px}
+.iw{position:relative}
+input[type="number"],input[type="text"]{width:100%;background:var(--bg3);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:'Barlow',sans-serif;font-size:16px;font-weight:600;padding:11px 46px 11px 14px;outline:none;transition:border-color .2s,background .2s;-moz-appearance:textfield}
+input[type="text"]{padding:11px 14px}
+input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none}
+input:focus{border-color:var(--orange);background:rgba(232,119,34,.05)}
+input[type="text"]::placeholder{color:var(--faint)}
+.u{position:absolute;right:13px;top:50%;transform:translateY(-50%);font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--faint);text-transform:uppercase;pointer-events:none}
+.hint{font-size:11px;color:rgba(255,255,255,.55);margin-top:5px;line-height:1.5}
+.hint.bl{color:rgba(91,155,213,.85)}
+.hint.gr{color:rgba(76,175,130,.85)}
+.hint.or{color:rgba(232,119,34,.9)}
+.fld{margin-bottom:14px}
+.fld:last-child{margin-bottom:0}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.fixd{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:11px 14px;font-size:16px;font-weight:600;color:rgba(255,255,255,.4);font-family:'Barlow',sans-serif}
+
+/* MATERIALES */
+.mat-hdrs{display:grid;grid-template-columns:1fr 108px 108px 40px;gap:8px;margin-bottom:8px}
+.mh{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.2em;color:var(--faint);text-transform:uppercase;padding:0 3px}
+.mat-list{display:flex;flex-direction:column;gap:8px}
+.mat-row{display:grid;grid-template-columns:1fr 108px 108px 40px;gap:8px;align-items:center;animation:si .2s ease}
+@keyframes si{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.mat-row input[type="number"]{font-size:15px;padding:10px 38px 10px 12px}
+.mat-row input[type="text"]{font-size:14px;padding:10px 12px}
+.bdel{background:rgba(255,60,60,.08);border:1px solid rgba(255,60,60,.18);color:rgba(255,100,100,.45);font-size:19px;width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.bdel:hover:not(:disabled){background:rgba(255,60,60,.22);color:#ff6666}
+.bdel:disabled{opacity:.2;cursor:not-allowed}
+.badd{background:transparent;border:1px dashed rgba(232,119,34,.35);color:rgba(232,119,34,.55);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:11px;cursor:pointer;width:100%;transition:all .2s;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px}
+.badd:hover{border-color:var(--orange);color:var(--orange);background:rgba(232,119,34,.04)}
+.mat-sub{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.ms-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.65);text-transform:uppercase}
+.ms-val{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px}
+
+/* SLIDER */
+.sl-row{display:flex;align-items:center;gap:14px;margin-top:6px}
+input[type="range"]{flex:1;-webkit-appearance:none;height:3px;background:rgba(255,255,255,.12);outline:none;cursor:pointer}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;background:var(--orange);cursor:pointer;border-radius:0}
+.sl-val{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;color:var(--orange);min-width:52px;text-align:right}
+
+/* AVANZADO */
+.adv-btn{width:100%;background:transparent;border:1px solid rgba(255,255,255,.07);color:var(--faint);font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;padding:12px 18px;cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;transition:all .2s;margin-bottom:10px}
+.adv-btn:hover{border-color:rgba(232,119,34,.3);color:rgba(255,255,255,.5)}
+.adv-btn .arr{transition:transform .3s;font-size:10px}
+.adv-panel{display:none;background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.055);padding:22px 24px;margin-bottom:10px}
+.adv-grp{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.adv-grp:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.adv-grp-t{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.3em;color:rgba(255,255,255,.6);text-transform:uppercase;margin-bottom:12px}
+.ibox{background:rgba(232,119,34,.05);border-left:3px solid rgba(232,119,34,.35);padding:10px 14px;margin-top:10px;font-size:11.5px;line-height:1.65;color:rgba(255,255,255,.75)}
+.ibox strong{color:var(--orange)}
+.ibox.bl{background:rgba(91,155,213,.07);border-left-color:rgba(91,155,213,.5)}
+.ibox.bl strong{color:var(--blue)}
+.ibox.gr{background:rgba(76,175,130,.07);border-left-color:rgba(76,175,130,.5)}
+.ibox.gr strong{color:var(--green)}
+.aviso{background:rgba(255,180,0,.06);border:1px solid rgba(255,180,0,.2);padding:10px 14px;font-size:12px;color:rgba(255,180,0,.8);font-family:'Barlow Condensed',sans-serif;display:none;margin-top:8px;line-height:1.5}
+
+/* RESULTADO */
+.res{background:rgba(232,119,34,.07);border:2px solid var(--orange);padding:28px 24px;margin-bottom:10px}
+.res-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;flex-wrap:wrap;gap:12px}
+.p-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.35em;color:rgba(255,255,255,.4);text-transform:uppercase;margin-bottom:2px}
+.p-final{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:82px;color:var(--orange);line-height:1}
+.p-final.minimo{color:var(--yellow)}
+.p-sub{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(255,255,255,.65);margin-top:6px}
+.badges{display:flex;flex-direction:column;align-items:flex-end;gap:6px;padding-top:6px}
+.pb{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:.08em;padding:5px 11px;border:1px solid;white-space:nowrap;text-transform:uppercase}
+.pb.gas{color:rgba(232,119,34,.8);border-color:rgba(232,119,34,.25);background:rgba(232,119,34,.05)}
+.pb.res2{color:rgba(91,155,213,.8);border-color:rgba(91,155,213,.25);background:rgba(91,155,213,.05)}
+.pb.ben{color:rgba(76,175,130,.9);border-color:rgba(76,175,130,.3);background:rgba(76,175,130,.06)}
+.pb.min{color:var(--yellow);border-color:rgba(240,192,64,.3);background:rgba(240,192,64,.05)}
+
+/* BLOQUES CATEGORÍA */
+.cats{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.cat{border:1px solid var(--border);overflow:hidden}
+.cat-h{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(0,0,0,.2)}
+.cdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.cname{font-family:'Barlow Condensed',sans-serif;font-size:9.5px;letter-spacing:.28em;text-transform:uppercase;flex:1}
+.ctot{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px}
+.cpct{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--faint);margin-left:6px}
+.cdesc{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.1em;color:rgba(255,255,255,.55);text-transform:uppercase;margin-left:auto;padding-right:4px}
+.citems{display:grid;gap:1px;background:rgba(255,255,255,.04)}
+.ci2{grid-template-columns:1fr 1fr}
+.ci3{grid-template-columns:1fr 1fr 1fr}
+.ci{background:var(--bg2);padding:11px 14px}
+.ci-l{font-family:'Barlow Condensed',sans-serif;font-size:8.5px;letter-spacing:.18em;color:rgba(255,255,255,.6);text-transform:uppercase;margin-bottom:4px}
+.ci-v{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px}
+.ci-p{font-size:9.5px;color:rgba(255,255,255,.5);font-family:'Barlow Condensed',sans-serif;margin-top:2px}
+
+/* COLORES CATEGORÍAS */
+.c-gas .cdot,.c-gas .cname,.c-gas .ctot{color:var(--orange)}
+.c-gas .cdot{background:var(--orange)}.c-gas .ci-v{color:#fff}
+.c-res .cdot{background:var(--blue)}.c-res .cname,.c-res .ctot{color:var(--blue)}.c-res .ci-v{color:var(--blue)}
+.c-ben .cdot{background:var(--green)}.c-ben .cname,.c-ben .ctot{color:var(--green)}.c-ben .ci-v{color:var(--green)}
+
+/* SUBTOTAL BENEFICIO (bruto - ahorro = neto) */
+.ben-subtotal{background:rgba(76,175,130,.04);padding:10px 14px;display:flex;flex-direction:column;gap:4px;border-top:1px solid var(--border)}
+.bs-row{display:flex;justify-content:space-between;align-items:center;font-family:'Barlow Condensed',sans-serif}
+.bs-row .bs-lbl{font-size:10px;letter-spacing:.18em;color:rgba(255,255,255,.55);text-transform:uppercase}
+.bs-row .bs-val{font-weight:700;font-size:15px;color:rgba(255,255,255,.85)}
+.bs-row.negative .bs-lbl{color:rgba(91,155,213,.85)}
+.bs-row.negative .bs-val{color:rgba(91,155,213,.85)}
+.bs-row.total{padding-top:6px;border-top:1px dashed rgba(255,255,255,.1);margin-top:2px}
+.bs-row.total .bs-lbl{color:var(--green);font-weight:700}
+.bs-row.total .bs-val{color:var(--green);font-size:18px;font-weight:900}
+
+/* BARRAS */
+.barras{margin-bottom:16px}
+.br{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.br-l{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.1em;color:rgba(255,255,255,.7);text-transform:uppercase;width:105px;flex-shrink:0}
+.b{flex:1;height:5px;background:rgba(255,255,255,.07);overflow:hidden}
+.bf{height:100%;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.bf.or{background:linear-gradient(90deg,#E87722,#ff9940)}
+.bf.bl{background:linear-gradient(90deg,#5b9bd5,#7bb8f0)}
+.bf.gr{background:linear-gradient(90deg,#4caf82,#70d0a0)}
+.br-n{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:rgba(255,255,255,.65);width:34px;text-align:right;flex-shrink:0}
+
+.pmin{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.07);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.pm-l{font-family:'Barlow Condensed',sans-serif;font-size:9.5px;letter-spacing:.18em;color:rgba(255,255,255,.65);text-transform:uppercase}
+.pm-v{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;color:rgba(255,255,255,.85)}
+
+/* BOTONES */
+.btn-pres{width:100%;background:var(--orange);border:none;color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:16px;letter-spacing:.15em;text-transform:uppercase;padding:18px;cursor:pointer;transition:all .2s;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-pres:hover{background:var(--ol);transform:translateY(-1px)}
+.btn-rst{width:100%;background:transparent;border:1px solid rgba(255,255,255,.09);color:rgba(255,255,255,.28);font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;padding:12px;cursor:pointer;transition:all .2s;margin-top:8px}
+.btn-rst:hover{border-color:rgba(255,80,80,.4);color:rgba(255,100,100,.6)}
+.fnote{text-align:center;font-size:11px;color:rgba(255,255,255,.5);margin-top:20px;line-height:1.6}
+
+/* MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-ov.open{display:flex}
+.modal{background:#181818;border:1px solid rgba(255,255,255,.12);width:100%;max-width:600px;max-height:90vh;overflow-y:auto;animation:mi .25s ease}
+@keyframes mi{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.m-hdr{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border);background:rgba(232,119,34,.06)}
+.m-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:20px;letter-spacing:.05em;text-transform:uppercase;color:var(--orange)}
+.m-close{background:transparent;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);font-size:20px;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.m-close:hover{border-color:rgba(255,80,80,.4);color:#ff6666}
+.m-body{padding:24px}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mf{margin-bottom:16px}
+.mf label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:6px}
+.mf input,.mf textarea{width:100%;background:var(--bg3);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:'Barlow',sans-serif;font-size:15px;font-weight:500;padding:10px 14px;outline:none;transition:border-color .2s;resize:vertical}
+.mf input:focus,.mf textarea:focus{border-color:var(--orange)}
+.mf textarea{min-height:72px;line-height:1.5}
+.mf input::placeholder,.mf textarea::placeholder{color:var(--faint)}
+.m-prev{background:rgba(232,119,34,.08);border:1px solid rgba(232,119,34,.3);padding:16px 20px;margin-top:6px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.mp-l{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.25em;color:rgba(255,255,255,.4);text-transform:uppercase;flex:1;min-width:120px}
+.mp-v{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:40px;color:var(--orange);line-height:1}
+.mp-s{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:rgba(255,255,255,.3);width:100%;margin-top:4px}
+.m-ftr{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end}
+.btn-cancel{background:transparent;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:11px 20px;cursor:pointer;transition:all .2s}
+.btn-cancel:hover{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7)}
+.btn-gen{background:var(--orange);border:none;color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:13px;letter-spacing:.15em;text-transform:uppercase;padding:11px 28px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
+.btn-gen:hover{background:var(--ol)}
+
+/* BOTÓN FLOTANTE CONFIG */
+.fab-config{position:fixed;top:18px;right:18px;width:40px;height:40px;background:rgba(232,119,34,.7);border:1px solid rgba(232,119,34,.4);color:#000;font-size:18px;cursor:pointer;z-index:300;transition:all .2s;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.4);opacity:.7}
+.fab-config:hover{opacity:1;background:var(--orange);transform:rotate(45deg)}
+@media(max-width:560px){.fab-config{top:14px;right:14px;width:36px;height:36px;font-size:16px}}
+@media(max-width:560px){
+  .mat-row,.mat-hdrs{grid-template-columns:1fr 85px 85px 36px}
+  .p-final{font-size:58px}.g2,.g3{grid-template-columns:1fr}
+  .res-top{flex-direction:column}.badges{align-items:flex-start}
+  .citems.ci2,.citems.ci3{grid-template-columns:1fr 1fr}
+  .mg{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+<div class="toast" id="toast"></div>
+
+<div class="wrap">
+  <div class="hdr">
+    <div class="hdr-l">
+      <svg width="40" height="40" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="26,4 48,16 26,28 4,16" fill="#ffaa55"/>
+        <polygon points="4,16 26,28 26,48 4,36" fill="#E87722"/>
+        <polygon points="26,28 48,16 48,36 26,48" fill="#a84d00"/>
+      </svg>
+      <div><div class="ln">FORMA <span class="y">Y</span> CAPAS</div><div class="ls">Impresión 3D · Valencia</div></div>
+    </div>
+    <div class="hdr-r">
+      <div class="ver">Calculadora v4.8 arranque</div>
+      <div class="savebadge" id="saveBadge"><span class="sdot"></span><span id="saveTxt">Guardando...</span></div>
+    </div>
+  </div>
+
+  <h1>CALCULA TU <span>PRECIO</span></h1>
+  <p class="sub">Mete los materiales y el tiempo. El precio se divide en <span style="color:var(--orange)">gastos</span>, <span style="color:var(--blue)">reservas</span> y <span style="color:var(--green)">beneficio real</span>.</p>
+
+  <!-- 01 MATERIALES -->
+  <div class="sec">
+    <div class="sec-title"><span class="bdg">01</span> Materiales · <span style="color:var(--orange);margin-left:4px">gasto directo</span></div>
+    <div class="mat-hdrs">
+      <div class="mh">Material / descripción</div>
+      <div class="mh" style="text-align:center">€ rollo 1kg</div>
+      <div class="mh" style="text-align:center">Gramos usados</div>
+      <div class="mh"></div>
+    </div>
+    <div class="mat-list" id="matList"></div>
+    <button class="badd" onclick="addMat()"><span style="font-size:15px">+</span> Añadir material</button>
+    <div class="mat-sub">
+      <span class="ms-lbl">Total filamento</span>
+      <span class="ms-val" style="color:var(--orange)" id="matSub">0,00 €</span>
+    </div>
+    <div class="hint" style="margin-top:4px">Una fila por filamento: modelo, soportes solubles, purgas, cambios de color...</div>
+  </div>
+
+  <!-- 02 TIEMPO -->
+  <div class="sec">
+    <div class="sec-title"><span class="bdg">02</span> Tiempo</div>
+    <div class="g2">
+      <div class="fld">
+        <label>Horas de impresión</label>
+        <div class="iw"><input type="number" id="hImp" value="3" min="0.1" step="0.1" oninput="calc()"><span class="u">h</span></div>
+        <div class="hint">Tiempo estimado por Bambu Studio al laminar</div>
+      </div>
+      <div class="fld">
+        <label>Horas de diseño / modelado</label>
+        <div class="iw"><input type="number" id="hDis" value="0" min="0" step="0.5" oninput="calc()"><span class="u">h</span></div>
+        <div class="hint gr">0 si el cliente trae el archivo — 100% beneficio tuyo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AJUSTES AVANZADOS -->
+  <button class="adv-btn" onclick="toggleAdv()">
+    <span>⚙ Ajustes avanzados — tarifas, márgenes, mínimo</span>
+    <span class="arr" id="advArr">▼</span>
+  </button>
+  <div class="adv-panel" id="advPanel">
+
+    <div class="adv-grp">
+      <div class="adv-grp-t">⚡ Electricidad · gasto directo</div>
+      <div class="g2">
+        <div class="fld">
+          <label>Consumo X2D (media real)</label>
+          <div class="fixd">120 W</div>
+          <div class="hint">Pico 1600W al calentar · ~120W imprimiendo</div>
+        </div>
+        <div class="fld">
+          <label>Precio kWh</label>
+          <div class="iw"><input type="number" id="kWh" value="0.20" min="0.05" step="0.01" oninput="calc()"><span class="u">€</span></div>
+          <div class="hint">Con margen sobre media ES (~0,14€/kWh)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="adv-grp">
+      <div class="adv-grp-t">🖨 Tarifa de servicio de impresión · beneficio sobre el tiempo de máquina</div>
+      <div class="g2">
+        <div class="fld">
+          <label>Tarifa por hora de máquina</label>
+          <div class="iw"><input type="number" id="tarImp" value="1.50" min="0" step="0.25" oninput="calc()"><span class="u">€/h</span></div>
+          <div class="hint or">Arranque: 1,50€/h (competitivo) · Estándar: 2-3€/h · Va directo a beneficio</div>
+        </div>
+        <div class="fld">
+          <label>Tu hora de diseño</label>
+          <div class="iw"><input type="number" id="tarDis" value="10.00" min="0" step="0.5" oninput="calc()"><span class="u">€/h</span></div>
+          <div class="hint gr">Íntegro a beneficio — sin márgenes ni reservas adicionales</div>
+        </div>
+      </div>
+      <div class="ibox gr">
+        El tiempo de impresión se cobra a <strong id="infoTarImp">2,00€/h</strong> y va directo a beneficio. Con <strong id="infoHImp">3h</strong> de impresión → <strong id="infoServImp">6,00€</strong>. El margen y la reserva se aplican solo sobre filamento + luz.
+      </div>
+    </div>
+
+    <div class="adv-grp">
+      <div class="adv-grp-t">💰 Margen de beneficio · sobre gastos reales + servicio impresión</div>
+      <div class="fld">
+        <label>Margen aplicado</label>
+        <div class="sl-row">
+          <input type="range" id="margen" min="10" max="200" value="30" oninput="document.getElementById('margenV').textContent=this.value+'%';calc()">
+          <span class="sl-val" id="margenV">30%</span>
+        </div>
+        <div class="hint gr">Arranque: 30% (captar clientes) · Estándar: 50-60% · Empresas: 80%+<br>Base: solo filamento + luz (los gastos reales)</div>
+      </div>
+    </div>
+
+    <div class="adv-grp">
+      <div class="adv-grp-t">⚠ Reserva para fallos e imprevistos · fondo empresa</div>
+      <div class="fld">
+        <label>% sobre gastos reales (fil + luz)</label>
+        <div class="sl-row">
+          <input type="range" id="fallos" min="0" max="40" value="10" oninput="document.getElementById('fallosV').textContent=this.value+'%';calc()">
+          <span class="sl-val" id="fallosV">10%</span>
+        </div>
+        <div class="hint bl">Reserva para desgaste, reparaciones y reposición de equipos. Por defecto 10%.</div>
+      </div>
+    </div>
+
+    <div class="adv-grp">
+      <div class="adv-grp-t">🖥 Fondo para equipos · reserva empresa</div>
+      <div class="fld">
+        <label>% sobre gastos reales (fil + luz)</label>
+        <div class="sl-row">
+          <input type="range" id="equipo" min="0" max="30" value="5" oninput="document.getElementById('equipoV').textContent=this.value+'%';calc()">
+          <span class="sl-val" id="equipoV">5%</span>
+        </div>
+        <div class="hint bl">Arranque: 5% · Sube a 8-10% cuando tengas volumen estable de pedidos.</div>
+      </div>
+    </div>
+
+    <div class="adv-grp">
+      <div class="adv-grp-t">💰 Ahorro automático · % del beneficio a reservas</div>
+      <div class="fld">
+        <label>% del beneficio que se desvía a reservas</label>
+        <div class="sl-row">
+          <input type="range" id="ahorroBen" min="0" max="60" value="30" oninput="document.getElementById('ahorroBenV').textContent=this.value+'%';calc()">
+          <span class="sl-val" id="ahorroBenV">30%</span>
+        </div>
+        <div class="hint bl">Como ahorrar un % del sueldo. Funciona como "ahorro forzado" — acelera la amortización de equipos sin subir precio al cliente.</div>
+      </div>
+    </div>
+
+
+
+    <div class="adv-grp">
+      <div class="adv-grp-t">🚧 Techo de precio de impresión · evita precios abusivos</div>
+      <div class="fld">
+        <label>Multiplicador máximo sobre coste de fabricación</label>
+        <div class="sl-row">
+          <input type="range" id="techo" min="1.5" max="6" step="0.1" value="3" oninput="document.getElementById('techoV').textContent=parseFloat(this.value).toFixed(1)+'x';calc()">
+          <span class="sl-val" id="techoV">3.0x</span>
+        </div>
+        <div class="hint or">El precio de impresión nunca supera este múltiplo del coste real de fabricación (gastos + tiempo de máquina). Recomendado: 3x. El diseño no cuenta para el techo.</div>
+      </div>
+      <div class="aviso" id="avisoTecho" style="background:rgba(255,180,0,.06);border-color:rgba(255,180,0,.2);color:rgba(255,180,0,.85)">⚠ Techo de impresión aplicado — el precio se ha ajustado para no superar el multiplicador máximo.</div>
+    </div>
+
+    <div class="adv-grp">
+      <div class="adv-grp-t">📦 Sugerencia de cantidad · amortizar diseño</div>
+      <div class="fld">
+        <label>Avisar cuando el diseño supere</label>
+        <div class="sl-row">
+          <input type="range" id="umbralDis" min="20" max="60" step="5" value="40" oninput="document.getElementById('umbralDisV').textContent=this.value+'%';calc()">
+          <span class="sl-val" id="umbralDisV">40%</span>
+        </div>
+        <div class="hint gr">Si el diseño pesa más de este % del precio total, la calculadora sugiere imprimir varias unidades para amortizarlo.</div>
+      </div>
+      <div class="aviso" id="avisoCantidad" style="background:rgba(76,175,130,.07);border-color:rgba(76,175,130,.25);color:rgba(76,175,130,.95);display:none"></div>
+    </div>
+
+    <div class="adv-grp">
+      <div class="adv-grp-t">🔒 Precio mínimo por encargo</div>
+      <div class="fld">
+        <label>Mínimo cobrable</label>
+        <div class="iw"><input type="number" id="minEnc" value="5" min="0" step="0.5" oninput="calc()"><span class="u">€</span></div>
+        <div class="hint">Ningún encargo por debajo de este precio, sea cual sea su tamaño</div>
+      </div>
+      <div class="aviso" id="avisoMin">⚠ Precio calculado inferior al mínimo — se aplica el mínimo de encargo.</div>
+    </div>
+
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="res">
+    <div class="res-top">
+      <div>
+        <div class="p-lbl">Precio sugerido al cliente</div>
+        <div class="p-final" id="pFinal">—</div>
+        <div class="p-sub" id="pSub">Introduce los datos para calcular</div>
+      </div>
+      <div class="badges">
+        <div class="pb gas" id="bGasto">Gastos: —</div>
+        <div class="pb res2" id="bReserva">Reservas: —</div>
+        <div class="pb ben" id="bBeneficio">Beneficio: —</div>
+        <div class="pb min" id="bMin" style="display:none">Mínimo aplicado</div>
+      </div>
+    </div>
+
+    <div class="cats">
+      <!-- GASTOS -->
+      <div class="cat c-gas">
+        <div class="cat-h">
+          <div class="cdot"></div>
+          <div class="cname">Gastos directos</div>
+          <div class="cdesc">lo que te cuesta realmente</div>
+          <div class="ctot" id="cGT">—</div>
+          <div class="cpct" id="cGP"></div>
+        </div>
+        <div class="citems ci2">
+          <div class="ci"><div class="ci-l">Filamento</div><div class="ci-v" id="dFil">—</div><div class="ci-p" id="pFil"></div></div>
+          <div class="ci"><div class="ci-l">Electricidad</div><div class="ci-v" id="dLuz">—</div><div class="ci-p" id="pLuz"></div></div>
+        </div>
+      </div>
+
+      <!-- RESERVAS -->
+      <div class="cat c-res">
+        <div class="cat-h">
+          <div class="cdot"></div>
+          <div class="cname">Reservas empresa</div>
+          <div class="cdesc">fondo — no se gasta ni es beneficio</div>
+          <div class="ctot" id="cRT">—</div>
+          <div class="cpct" id="cRP"></div>
+        </div>
+        <div class="citems ci3">
+          <div class="ci"><div class="ci-l">Fallos / imprevistos</div><div class="ci-v" id="dFall">—</div><div class="ci-p" id="pFall"></div></div>
+          <div class="ci"><div class="ci-l">Fondo equipos</div><div class="ci-v" id="dEquip">—</div><div class="ci-p" id="pEquip"></div></div>
+          <div class="ci"><div class="ci-l">Ahorro beneficio</div><div class="ci-v" id="dAhorro">—</div><div class="ci-p" id="pAhorro"></div></div>
+        </div>
+      </div>
+
+      <!-- BENEFICIO -->
+      <div class="cat c-ben">
+        <div class="cat-h">
+          <div class="cdot"></div>
+          <div class="cname">Beneficio real</div>
+          <div class="cdesc">bruto · ahorro · neto a tu bolsillo</div>
+          <div class="ctot" id="cBT">—</div>
+          <div class="cpct" id="cBP"></div>
+        </div>
+        <div class="citems ci3">
+          <div class="ci"><div class="ci-l">Diseño / modelado</div><div class="ci-v" id="dDis">—</div><div class="ci-p" id="pDis"></div></div>
+          <div class="ci"><div class="ci-l">Servicio impresión</div><div class="ci-v" id="dServ">—</div><div class="ci-p" id="pServ"></div></div>
+          <div class="ci"><div class="ci-l">Margen s/ gastos</div><div class="ci-v" id="dMarg">—</div><div class="ci-p" id="pMarg"></div></div>
+        </div>
+        <div class="ben-subtotal">
+          <div class="bs-row">
+            <span class="bs-lbl">Beneficio bruto</span>
+            <span class="bs-val" id="benBruto">—</span>
+          </div>
+          <div class="bs-row negative">
+            <span class="bs-lbl">− Ahorro a reservas</span>
+            <span class="bs-val" id="benAhorroResta">—</span>
+          </div>
+          <div class="bs-row total">
+            <span class="bs-lbl">A tu bolsillo</span>
+            <span class="bs-val" id="benNeto">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BARRAS -->
+    <div class="barras">
+      <div class="br"><div class="br-l">Filamento</div><div class="b"><div class="bf or" id="bFil" style="width:0%"></div></div><div class="br-n" id="bpFil">0%</div></div>
+      <div class="br"><div class="br-l">Electricidad</div><div class="b"><div class="bf or" id="bLuz" style="width:0%"></div></div><div class="br-n" id="bpLuz">0%</div></div>
+      <div class="br"><div class="br-l">Serv. impresión</div><div class="b"><div class="bf or" id="bServ" style="width:0%"></div></div><div class="br-n" id="bpServ">0%</div></div>
+      <div class="br"><div class="br-l">Reserva</div><div class="b"><div class="bf bl" id="bFall" style="width:0%"></div></div><div class="br-n" id="bpFall">0%</div></div>
+      <div class="br"><div class="br-l">Fondo equipo</div><div class="b"><div class="bf bl" id="bEquip" style="width:0%"></div></div><div class="br-n" id="bpEquip">0%</div></div>
+      <div class="br"><div class="br-l">Diseño</div><div class="b"><div class="bf gr" id="bDis" style="width:0%"></div></div><div class="br-n" id="bpDis">0%</div></div>
+      <div class="br"><div class="br-l">Margen</div><div class="b"><div class="bf gr" id="bMarg" style="width:0%"></div></div><div class="br-n" id="bpMarg">0%</div></div>
+    </div>
+
+    <div class="pmin">
+      <span class="pm-l">Precio mínimo sin beneficio (solo cubrir todo)</span>
+      <span class="pm-v" id="pMin">—</span>
+    </div>
+  </div>
+
+  <button class="btn-pres" onclick="abrirModal()">📄 Generar presupuesto para cliente</button>
+  <button class="btn-rst" onclick="confirmReset()">↺ Restablecer valores por defecto</button>
+  <div class="fnote">Datos guardados automáticamente · Precios orientativos</div>
+</div>
+
+<!-- BOTÓN FLOTANTE CONFIG -->
+<button class="fab-config" onclick="abrirConfig()" title="Ajustar valores base">⚙</button>
+
+<!-- MODAL -->
+<div class="modal-ov" id="modalOv" onclick="cerrarModalClick(event)">
+  <div class="modal">
+    <div class="m-hdr">
+      <div class="m-title">Datos del presupuesto</div>
+      <button class="m-close" onclick="cerrarModal()">×</button>
+    </div>
+    <div class="m-body">
+      <div class="mg">
+        <div class="mf"><label>Nombre del cliente</label><input type="text" id="pNombre" placeholder="Nombre / Empresa"></div>
+        <div class="mf"><label>Email o teléfono</label><input type="text" id="pContacto" placeholder="email / 6XX XXX XXX"></div>
+      </div>
+      <div class="mf"><label>Descripción del encargo</label><textarea id="pDesc" placeholder="Ej: Figura decorativa en PLA negro, 15cm, diseño a partir de boceto del cliente." rows="3"></textarea></div>
+      <div class="mg">
+        <div class="mf"><label>Material(es)</label><input type="text" id="pMat" placeholder="PLA negro / Soporte soluble"></div>
+        <div class="mf"><label>Plazo estimado</label><input type="text" id="pPlazo" placeholder="Ej: 3-5 días laborables"></div>
+      </div>
+      <div class="mf"><label>Notas adicionales (opcional)</label><textarea id="pNotas" placeholder="Ej: Recogida en Valencia..." rows="2"></textarea></div>
+      <div class="m-prev">
+        <div class="mp-l">Precio del presupuesto</div>
+        <div class="mp-v" id="mpV">—</div>
+        <div class="mp-s" id="mpS"></div>
+      </div>
+    </div>
+    <div class="m-ftr">
+      <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn-gen" onclick="generarPDF()">📄 Generar PDF</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CONS_W = 120;
+let matId=0, saveTimer=null, _precio=0, _dis=0;
+
+// ── UTILS ─────────────────────────────────────────────────
+const $=id=>document.getElementById(id);
+function fmt(n){return n.toFixed(2).replace('.',',')+' €'}
+function fmtP(n){return Math.round(n)+'%'}
+function toast(m,d=2200){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d)}
+function setSaved(s){const b=$('saveBadge');b.className='savebadge'+(s?' saved':'');$('saveTxt').textContent=s?'Guardado':'Guardando...'}
+
+// ── MATERIALES ────────────────────────────────────────────
+function addMat(n='',p=25,g=50){
+  const id=matId++;
+  const row=document.createElement('div');
+  row.className='mat-row';row.id='mr-'+id;
+  row.innerHTML=`
+    <input type="text" class="mn" placeholder="Ej: PLA negro / Soporte soluble" value="${n}" oninput="calc()">
+    <div class="iw"><input type="number" class="mp" value="${p}" min="0.1" step="0.5" oninput="calc()"><span class="u">€</span></div>
+    <div class="iw"><input type="number" class="mg2" value="${g}" min="0.1" step="0.5" oninput="calc()"><span class="u">g</span></div>
+    <button class="bdel" onclick="delMat('mr-${id}')" title="Eliminar">×</button>`;
+  $('matList').appendChild(row);
+  updDel();calc();
+}
+function delMat(id){
+  const rows=document.querySelectorAll('.mat-row');
+  if(rows.length<=1){toast('Debe haber al menos un material');return}
+  const el=$(id);
+  if(el){el.style.opacity='0';el.style.transform='translateX(8px)';el.style.transition='all .2s';
+    setTimeout(()=>{el.remove();updDel();calc();},200)}
+}
+function updDel(){
+  const rows=document.querySelectorAll('.mat-row');
+  rows.forEach(r=>{const b=r.querySelector('.bdel');if(b)b.disabled=rows.length<=1});
+}
+
+// ── AVANZADO ──────────────────────────────────────────────
+function toggleAdv(){
+  const p=$('advPanel'),a=$('advArr');
+  const open=p.style.display==='block';
+  p.style.display=open?'none':'block';
+  a.style.transform=open?'rotate(0deg)':'rotate(180deg)';
+}
+
+// ── CÁLCULO ───────────────────────────────────────────────
+function calc(){
+  // INPUTS
+  const hImp  = parseFloat($('hImp').value)||0;
+  const hDis  = parseFloat($('hDis').value)||0;
+  const kWh   = parseFloat($('kWh').value)||0.20;
+  const tarI  = parseFloat($('tarImp').value)||2;
+  const tarD  = parseFloat($('tarDis').value)||8;
+  const marP  = parseFloat($('margen').value)||50;
+  const falP  = parseFloat($('fallos').value)||15;
+  const equP  = parseFloat($('equipo').value)||8;
+
+  const minE  = parseFloat($('minEnc').value)||5;
+
+  // GASTOS BASE: filamento + luz
+  let cFil=0;
+  document.querySelectorAll('.mat-row').forEach(r=>{
+    const p=parseFloat(r.querySelector('.mp').value)||0;
+    const g=parseFloat(r.querySelector('.mg2').value)||0;
+    cFil+=(p/1000)*g;
+  });
+  const cLuz   = hImp*(CONS_W/1000)*kWh;
+  const cGas   = cFil+cLuz; // GASTOS REALES
+
+  // SERVICIO DE IMPRESIÓN: tarifa por hora → beneficio
+  const cServ  = hImp*tarI;               // servicio impresión → BENEFICIO (aparte)
+  const cGasT  = cGas;                    // GASTOS REALES: solo fil+luz
+
+  // SOBRE GASTOS REALES (solo fil+luz)
+  const cFall  = cGasT*(falP/100);        // reserva desgaste 10%
+  const cEquip = cGasT*(equP/100);        // fondo equipos
+  // cAhorro se calcula más abajo (depende del beneficio bruto)
+  // cRes se completa después de calcular cAhorro
+
+  // BENEFICIO (3 partes separadas: diseño + servicio + margen)
+  const cDis   = hDis*tarD;              // diseño: 100% beneficio directo
+  let   cMarg  = cGasT*(marP/100);       // margen 40% sobre gastos reales
+
+  // TECHO DE IMPRESIÓN: precio de impresión (sin diseño) no supera X veces el coste de fabricación
+  const techoMul = parseFloat($('techo').value)||3;
+  const costeFab = cGasT+cServ;
+  const subImp   = cGasT+cFall+cEquip+cServ+cMarg;  // sin diseño ni ahorro
+  const techoMax = costeFab*techoMul;
+  let   techoAp  = false;
+  if(subImp>techoMax){
+    const cMargMax = Math.max(0, techoMax-cGasT-cFall-cEquip-cServ);
+    cMarg = cMargMax;
+    techoAp = true;
+  }
+  const cBenBruto = cDis+cServ+cMarg;    // beneficio bruto
+  const ahoP      = parseFloat($('ahorroBen').value)||30;
+  const cAhorro   = cBenBruto*(ahoP/100);  // se desvía a reservas
+  const cBen      = cBenBruto-cAhorro;     // beneficio NETO (a tu bolsillo)
+
+  const cRes   = cFall+cEquip+cAhorro;  // reservas totales (incluye ahorro)
+
+  // PRECIO FINAL
+  let total    = cGasT+cRes+cBen;
+  const minAp  = total<minE&&minE>0;
+  if(minAp) total=minE;
+  $('avisoTecho').style.display = techoAp ? 'block' : 'none';
+
+  // SUGERENCIA DE CANTIDAD: si diseño pesa demasiado, calcular nº unidades óptimo
+  const umbral = parseFloat($('umbralDis').value)||40;
+  const pctDis = total>0 ? (cDis/total)*100 : 0;
+  if(cDis>0 && pctDis>umbral){
+    // Buscar cuántas unidades hacen falta para que diseño baje a 25%
+    // Cada unidad adicional añade el coste de impresión completo (sin diseño)
+    const costeImpresion = cGasT+cRes+cMarg; // por unidad
+    // Queremos: cDis / (n*costeImp + cDis) <= 25%
+    // => cDis*0.75 <= n*costeImp*0.25
+    // => n >= (3*cDis) / costeImp
+    const nOptimo = Math.ceil((3*cDis) / costeImpresion);
+    const totalN  = nOptimo*costeImpresion + cDis;
+    const porPieza = totalN/nOptimo;
+    $('avisoCantidad').innerHTML =
+      `💡 El diseño pesa <strong>${Math.round(pctDis)}%</strong> del precio. Con <strong>${nOptimo} unidades</strong> el coste por pieza bajaría a <strong>${fmt(porPieza)}</strong> (total <strong>${fmt(totalN)}</strong>) — diseño amortizado.`;
+    $('avisoCantidad').style.display = 'block';
+  } else {
+    $('avisoCantidad').style.display = 'none';
+  }
+
+  // Guardar para modal
+  _precio=total; _dis=cDis;
+
+  // INFO DINÁMICA
+  $('infoTarImp').textContent=tarI.toFixed(2).replace('.',',')+' €/h';
+  $('infoHImp').textContent=hImp+'h';
+  $('infoServImp').textContent=fmt(cServ);
+  $('matSub').textContent=fmt(cFil);
+
+  // RESULTADO PRINCIPAL
+  const pEl=$('pFinal');
+  pEl.textContent=total<0.01?'—':total.toFixed(2).replace('.',',')+' €';
+  pEl.className='p-final'+(minAp?' minimo':'');
+  $('pSub').textContent=minAp
+    ?`Mínimo aplicado · Gastos: ${fmt(cGasT)} · Beneficio calculado: ${fmt(cBen)}`
+    :`Gastos: ${fmt(cGasT)} · Reservas: ${fmt(cRes)} · Beneficio: ${fmt(cBen)}`;
+
+  $('bGasto').textContent=`Gastos: ${fmt(cGasT)}`;
+  $('bReserva').textContent=`Reservas: ${fmt(cRes)}`;
+  $('bBeneficio').textContent=`Beneficio: ${fmt(cBen)}`;
+  $('bMin').style.display=minAp?'block':'none';
+  $('avisoMin').style.display=minAp?'block':'none';
+  $('pMin').textContent=fmt(cGasT+cRes);
+
+  // CATEGORÍA GASTOS
+  $('cGT').textContent=fmt(cGasT);
+  $('cGP').textContent=total>0?fmtP((cGasT/total)*100):'';
+  $('dFil').textContent=fmt(cFil);  $('pFil').textContent=total>0?fmtP((cFil/total)*100)+' del total':'';
+  $('dLuz').textContent=fmt(cLuz);  $('pLuz').textContent=total>0?fmtP((cLuz/total)*100)+' del total':'';
+
+  // CATEGORÍA RESERVAS
+  $('cRT').textContent=fmt(cRes);
+  $('cRP').textContent=total>0?fmtP((cRes/total)*100):'';
+  $('dFall').textContent=fmt(cFall);  $('pFall').textContent=total>0?fmtP((cFall/total)*100)+' del total':'';
+  $('dEquip').textContent=fmt(cEquip);$('pEquip').textContent=total>0?fmtP((cEquip/total)*100)+' del total':'';
+  $('dAhorro').textContent=fmt(cAhorro);$('pAhorro').textContent=total>0?fmtP((cAhorro/total)*100)+' del total':'';
+
+  // CATEGORÍA BENEFICIO
+  $('cBT').textContent=fmt(cBenBruto);
+  $('cBP').textContent=total>0?fmtP((cBenBruto/total)*100):'';
+  $('dDis').textContent=fmt(cDis);  $('pDis').textContent=total>0?fmtP((cDis/total)*100)+' del total':'';
+  $('dServ').textContent=fmt(cServ);$('pServ').textContent=total>0?fmtP((cServ/total)*100)+' del total':'';
+  $('dMarg').textContent=fmt(cMarg);$('pMarg').textContent=total>0?fmtP((cMarg/total)*100)+' del total':'';
+  $('benBruto').textContent=fmt(cBenBruto);
+  $('benAhorroResta').textContent='− '+fmt(cAhorro);
+  $('benNeto').textContent=fmt(cBen);
+
+  // BARRAS
+  if(total>0){
+    [['bFil',cFil,'bpFil'],['bLuz',cLuz,'bpLuz'],['bServ',cServ,'bpServ'],
+     ['bFall',cFall,'bpFall'],['bEquip',cEquip,'bpEquip'],
+     ['bDis',cDis,'bpDis'],['bMarg',cMarg,'bpMarg']
+    ].forEach(([bid,v,pid])=>{
+      const pct=(v/total)*100;
+      $(bid).style.width=pct+'%';
+      $(pid).textContent=fmtP(pct)+'%';
+    });
+  }
+
+  // AUTOGUARDAR
+  clearTimeout(saveTimer);setSaved(false);
+  saveTimer=setTimeout(()=>{guardar();setSaved(true);},800);
+}
+
+// ── PERSISTENCIA ──────────────────────────────────────────
+function guardar(){
+  try{
+    const mats=[];
+    document.querySelectorAll('.mat-row').forEach(r=>mats.push({
+      n:r.querySelector('.mn').value,
+      p:r.querySelector('.mp').value,
+      g:r.querySelector('.mg2').value
+    }));
+    localStorage.setItem('fyc_v48',JSON.stringify({
+      mats,
+      hImp:$('hImp').value,hDis:$('hDis').value,
+      kWh:$('kWh').value,tarImp:$('tarImp').value,tarDis:$('tarDis').value,
+      margen:$('margen').value,fallos:$('fallos').value,equipo:$('equipo').value,
+      minEnc:$('minEnc').value,
+      techo:$('techo').value,umbralDis:$('umbralDis').value,ahorroBen:$('ahorroBen').value
+    }));
+  }catch(e){}
+}
+function cargar(){
+  try{
+    const raw=localStorage.getItem('fyc_v48');if(!raw)return false;
+    const s=JSON.parse(raw);
+    $('matList').innerHTML='';matId=0;
+    if(s.mats?.length>0)s.mats.forEach(m=>addMat(m.n,parseFloat(m.p),parseFloat(m.g)));
+    else addMat('PLA modelo',25,50);
+    const set=(id,v)=>{if(v!==undefined&&$(id))$(id).value=v};
+    set('hImp',s.hImp);set('hDis',s.hDis);set('kWh',s.kWh);
+    set('tarImp',s.tarImp);set('tarDis',s.tarDis);
+    set('minEnc',s.minEnc);
+    if(s.techo){$('techo').value=s.techo;$('techoV').textContent=parseFloat(s.techo).toFixed(1)+'x'}
+    if(s.umbralDis){$('umbralDis').value=s.umbralDis;$('umbralDisV').textContent=s.umbralDis+'%'}
+    if(s.ahorroBen){$('ahorroBen').value=s.ahorroBen;$('ahorroBenV').textContent=s.ahorroBen+'%'}
+    if(s.margen){$('margen').value=s.margen;$('margenV').textContent=s.margen+'%'}
+    if(s.fallos){$('fallos').value=s.fallos;$('fallosV').textContent=s.fallos+'%'}
+    if(s.equipo){$('equipo').value=s.equipo;$('equipoV').textContent=s.equipo+'%'}
+    return true;
+  }catch(e){return false}
+}
+function confirmReset(){if(confirm('¿Restablecer todos los valores por defecto?'))reset()}
+function reset(){
+  $('matList').innerHTML='';matId=0;addMat('PLA modelo',25,50);
+  $('hImp').value=3;$('hDis').value=0;$('kWh').value=0.20;
+  $('tarImp').value=1.50;$('tarDis').value=10.00;
+  $('margen').value=30;$('margenV').textContent='30%';
+  $('fallos').value=10;$('fallosV').textContent='10%';
+  $('equipo').value=5;$('equipoV').textContent='5%';
+  $('minEnc').value=5;
+  $('techo').value=3;$('techoV').textContent='3.0x';
+  $('umbralDis').value=40;$('umbralDisV').textContent='40%';
+  $('ahorroBen').value=30;$('ahorroBenV').textContent='30%';
+  calc();toast('Valores restablecidos');
+}
+
+// ── MODAL PRESUPUESTO ─────────────────────────────────────
+function abrirModal(){
+  if(_precio<=0){toast('Calcula el precio primero');return}
+  const mats=[];
+  document.querySelectorAll('.mat-row').forEach(r=>{
+    const n=r.querySelector('.mn').value||'Material';
+    const g=r.querySelector('.mg2').value;
+    mats.push(n+(g?` (${g}g)`:''));
+  });
+  $('pMat').value=mats.join(', ');
+  $('mpV').textContent=$('pFinal').textContent;
+  $('mpS').textContent=_dis>0?`Incluye ${fmt(_dis)} de diseño`:'';
+  $('modalOv').classList.add('open');
+}
+function cerrarModal(){$('modalOv').classList.remove('open')}
+function cerrarModalClick(e){if(e.target===$('modalOv'))cerrarModal()}
+
+// ── GENERAR PDF ───────────────────────────────────────────
+function generarPDF(){
+  const nombre=$('pNombre').value.trim()||'Cliente';
+  const contacto=$('pContacto').value.trim();
+  const desc=$('pDesc').value.trim()||'Encargo de impresión 3D';
+  const mat=$('pMat').value.trim();
+  const plazo=$('pPlazo').value.trim()||'A confirmar';
+  const notas=$('pNotas').value.trim();
+  const hImp=parseFloat($('hImp').value)||0;
+  const hDis=parseFloat($('hDis').value)||0;
+  const tarI=parseFloat($('tarImp').value)||2;
+  const tarD=parseFloat($('tarDis').value)||8;
+  const cServ=hImp*tarI;
+  const cDis=hDis*tarD;
+  const num='FYC-'+Date.now().toString().slice(-6);
+  const fecha=new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'long',year:'numeric'});
+  const validez=new Date(Date.now()+15*86400000).toLocaleDateString('es-ES',{day:'2-digit',month:'long',year:'numeric'});
+
+  let filas='';
+  if(cServ>0&&cDis>0){
+    filas=`<tr><td>Servicio de impresión 3D (${hImp}h)</td><td>${fmt(cServ)}</td></tr>
+           <tr><td>Diseño y modelado 3D (${hDis}h)</td><td>${fmt(cDis)}</td></tr>
+           <tr><td>Fabricación</td><td>${fmt(_precio-cServ-cDis)}</td></tr>`;
+  }else if(cDis>0){
+    filas=`<tr><td>Diseño y modelado 3D (${hDis}h)</td><td>${fmt(cDis)}</td></tr>
+           <tr><td>Servicio de impresión 3D</td><td>${fmt(_precio-cDis)}</td></tr>`;
+  }else{
+    filas=`<tr><td>Servicio de impresión 3D</td><td>${fmt(_precio)}</td></tr>`;
+  }
+
+  const html=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Barlow:wght@300;400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Barlow',sans-serif;background:#fff;color:#111;width:210mm;min-height:297mm}
+.doc{padding:14mm 16mm}
+.cab{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10mm;padding-bottom:6mm;border-bottom:3px solid #E87722}
+.logo-txt{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:26px;letter-spacing:.04em;text-transform:uppercase;color:#111;line-height:1}
+.logo-txt .y{color:#E87722}
+.logo-sub{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.25em;color:#888;text-transform:uppercase;margin-top:3px}
+.cab-info{text-align:right;font-size:11px;color:#555;line-height:1.7}
+.tipo{display:flex;justify-content:space-between;align-items:center;margin-bottom:8mm}
+.tipo-t{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:32px;text-transform:uppercase;letter-spacing:.04em}
+.tipo-n{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:.15em;color:#888;text-transform:uppercase;text-align:right}
+.tipo-n strong{display:block;font-size:16px;color:#E87722}
+.partes{display:grid;grid-template-columns:1fr 1fr;gap:6mm;margin-bottom:8mm}
+.parte{background:#f8f8f8;padding:5mm;border-left:3px solid #E87722}
+.p-tit{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.25em;color:#999;text-transform:uppercase;margin-bottom:4px}
+.p-nom{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;margin-bottom:2px}
+.p-det{font-size:11px;color:#555;line-height:1.5}
+.desc-b{background:#f8f8f8;padding:5mm;margin-bottom:8mm;border-left:3px solid #ddd}
+.desc-t{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.25em;color:#999;text-transform:uppercase;margin-bottom:4px}
+.desc-txt{font-size:13px;color:#222;line-height:1.6}
+table{width:100%;border-collapse:collapse;margin-bottom:0}
+thead tr{background:#111;color:#fff}
+thead td{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:7px 10px}
+tbody tr{border-bottom:1px solid #eee}
+tbody td{padding:8px 10px;font-size:13px;color:#222}
+tbody tr:last-child td{border-bottom:2px solid #111}
+td:last-child{text-align:right;white-space:nowrap}
+.tw{margin-bottom:5mm}
+.total-b{display:flex;justify-content:flex-end;margin-bottom:8mm}
+.total-i{background:#111;color:#fff;padding:5mm 7mm;min-width:70mm}
+.t-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:#888;margin-bottom:3px}
+.t-val{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:42px;color:#E87722;line-height:1}
+.t-iva{font-size:11px;color:#666;margin-top:3px}
+.ig{display:grid;grid-template-columns:1fr 1fr;gap:4mm;margin-bottom:8mm}
+.ii{padding:4mm;border:1px solid #e8e8e8}
+.ii-l{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.22em;color:#aaa;text-transform:uppercase;margin-bottom:3px}
+.ii-v{font-size:12px;color:#222;font-weight:500;line-height:1.4}
+.notas-b{background:#fff8f0;border:1px solid #ffd0a0;padding:4mm;margin-bottom:8mm;font-size:12px;color:#555;line-height:1.6}
+.n-tit{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.22em;color:#E87722;text-transform:uppercase;margin-bottom:3px}
+.pie{border-top:1px solid #eee;padding-top:5mm;display:flex;justify-content:space-between;align-items:center}
+.pie-txt{font-size:10px;color:#aaa;line-height:1.6}
+.pie-v{font-size:11px;color:#E87722;font-weight:600}
+.pie-qr{text-align:center;font-size:9px;color:#bbb}
+.pie-qr img{width:55px;height:55px;display:block;margin:0 auto 3px}
+.franja{background:#E87722;height:4mm;margin-top:8mm}
+</style></head><body>
+<div class="doc">
+  <div class="cab">
+    <div style="display:flex;align-items:center;gap:10px">
+      <svg width="38" height="38" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="26,4 48,16 26,28 4,16" fill="#ffaa55"/>
+        <polygon points="4,16 26,28 26,48 4,36" fill="#E87722"/>
+        <polygon points="26,28 48,16 48,36 26,48" fill="#a84d00"/>
+      </svg>
+      <div><div class="logo-txt">FORMA <span class="y">Y</span> CAPAS</div><div class="logo-sub">Impresión 3D · Valencia</div></div>
+    </div>
+    <div class="cab-info"><strong>Forma y Capas</strong><br>Valencia, España<br>formaycapas@gmail.com<br>653 924 540</div>
+  </div>
+  <div class="tipo">
+    <div class="tipo-t">Presupuesto</div>
+    <div class="tipo-n"><span>Referencia</span><strong>${num}</strong><span style="font-size:11px;color:#aaa;font-weight:400">${fecha}</span></div>
+  </div>
+  <div class="partes">
+    <div class="parte"><div class="p-tit">Emisor</div><div class="p-nom">Forma y Capas</div><div class="p-det">Estudio de diseño e impresión 3D<br>Valencia, España</div></div>
+    <div class="parte"><div class="p-tit">Destinatario</div><div class="p-nom">${nombre}</div><div class="p-det">${contacto||'—'}</div></div>
+  </div>
+  <div class="desc-b"><div class="desc-t">Descripción del encargo</div><div class="desc-txt">${desc}</div></div>
+  <div class="tw"><table>
+    <thead><tr><td>Concepto</td><td style="text-align:right">Importe</td></tr></thead>
+    <tbody>${filas}</tbody>
+  </table></div>
+  <div class="total-b"><div class="total-i">
+    <div class="t-lbl">Total presupuesto</div>
+    <div class="t-val">${_precio.toFixed(2).replace('.',',')} €</div>
+    <div class="t-iva">Precio final · IVA no incluido</div>
+  </div></div>
+  <div class="ig">
+    <div class="ii"><div class="ii-l">Material(es)</div><div class="ii-v">${mat||'A confirmar'}</div></div>
+    <div class="ii"><div class="ii-l">Plazo estimado</div><div class="ii-v">${plazo}</div></div>
+  </div>
+  ${notas?`<div class="notas-b"><div class="n-tit">Notas</div>${notas}</div>`:''}
+  <div class="pie">
+    <div class="pie-txt">Validez: <span class="pie-v">15 días</span> (hasta el ${validez})<br>La confirmación implica la aceptación de las condiciones del servicio.<br>El precio puede variar si cambian las especificaciones del proyecto.</div>
+    <div class="pie-qr">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://formaycapas.github.io/formaycapas/&color=111111&bgcolor=ffffff&format=png&margin=1" alt="QR">
+      formaycapas.github.io
+    </div>
+  </div>
+</div>
+<div class="franja"></div>
+</body></html>`;
+
+  const win=window.open('','_blank','width=900,height=700');
+  win.document.write(html);win.document.close();
+  win.onload=()=>setTimeout(()=>win.print(),400);
+  cerrarModal();
+  toast('Presupuesto generado — guarda como PDF al imprimir');
+}
+
+// ── BOTÓN CONFIGURACIÓN BASE (oculto, esquina) ────────────
+function abrirConfig(){
+  toggleAdv();
+  $('advPanel').scrollIntoView({behavior:'smooth',block:'start'});
+  toast('Ajustes desplegados');
+}
+
+// ── INIT ──────────────────────────────────────────────────
+const ok=cargar();
+if(!ok)addMat('PLA modelo',25,50);
+calc();setSaved(true);
+if(ok)toast('Datos anteriores restaurados',2000);
+</script>
+</body>
+</html>
